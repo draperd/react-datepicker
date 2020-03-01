@@ -21,24 +21,16 @@ function CalendarHeader() {
 
 function Week(props) {
   const { days } = props;
-  const {
-    sunday,
-    monday,
-    tuesday,
-    wednesday,
-    thursday,
-    friday,
-    saturday
-  } = days;
+
   return (
     <tr>
-      <td>{sunday.dayOfMonth}</td>
-      <td>{monday.dayOfMonth}</td>
-      <td>{tuesday.dayOfMonth}</td>
-      <td>{wednesday.dayOfMonth}</td>
-      <td>{thursday.dayOfMonth}</td>
-      <td>{friday.dayOfMonth}</td>
-      <td>{saturday.dayOfMonth}</td>
+      <td>{days[0].dayOfMonth}</td>
+      <td>{days[1].dayOfMonth}</td>
+      <td>{days[2].dayOfMonth}</td>
+      <td>{days[3].dayOfMonth}</td>
+      <td>{days[4].dayOfMonth}</td>
+      <td>{days[5].dayOfMonth}</td>
+      <td>{days[6].dayOfMonth}</td>
     </tr>
   );
 }

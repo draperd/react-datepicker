@@ -1,5 +1,15 @@
 // @flow
 
+export type DateIsBeforeFirstDateInMonth = ({
+  currentDate: Date,
+  firstDateInMonth: Date
+}) => boolean;
+
+export type DateIsAfterLastDateInMonth = ({
+  currentDate: Date,
+  lastDateInMonth: Date
+}) => boolean;
+
 export type DayData = {
   dayOfMonth: number,
   isInCurrentMonth: boolean,
@@ -9,28 +19,18 @@ export type DayData = {
   date: Date
 };
 
-export type WeekData = {
-  sunday: DayData,
-  monday: DayData,
-  tuesday: DayData,
-  wednesday: DayData,
-  thursday: DayData,
-  friday: DayData,
-  saturday: DayData
-};
-
 export type CreateDayData = ({
-  dayOfMonth: number,
-  isInCurrentMonth?: boolean,
-  available?: boolean,
-  selected?: boolean,
-  today?: boolean,
-  date?: Date
+  currentDate: Date,
+  firstDateInMonth: Date,
+  lastDateInMonth: Date
 }) => DayData;
+
+export type WeekData = {
+  [number]: DayData
+};
 
 export type GetFirstDayOfMonth = Date => number;
 export type GetLastDateOfPreviousMonth = Date => number;
-export type GetEmptyWeek = () => WeekData;
 
 export type GetWeekData = ({
   date: Date,
