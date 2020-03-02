@@ -48,7 +48,8 @@ export const createDayData: CreateDayData = ({
   currentDate,
   firstDateInMonth,
   lastDateInMonth,
-  selectedDate
+  selectedDate,
+  today
 }) => {
   const currentDateOutsideMonth =
     dateIsBeforeFirstDateInMonth({ currentDate, firstDateInMonth }) ||
@@ -59,7 +60,7 @@ export const createDayData: CreateDayData = ({
     isInCurrentMonth: !currentDateOutsideMonth,
     available: true,
     selected: datesAreEqual({ date1: currentDate, date2: selectedDate }),
-    today: false,
+    today: datesAreEqual({ date1: currentDate, date2: today }),
     date: currentDate
   };
 
@@ -70,7 +71,8 @@ export const getWeekData: GetWeekData = ({
   date,
   firstDateInMonth,
   lastDateInMonth,
-  selectedDate
+  selectedDate,
+  today
 }) => {
   const firstDateInWeek = getFirstDateOfWeek({ date });
 
@@ -82,7 +84,8 @@ export const getWeekData: GetWeekData = ({
       currentDate,
       firstDateInMonth,
       lastDateInMonth,
-      selectedDate
+      selectedDate,
+      today
     });
 
     const day = dayData.date.getDay();
@@ -107,7 +110,7 @@ export const getLastDateInMonth: GetLastDateInMonth = ({ date }) => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 };
 
-export const getMonthData: GetMonthData = ({ date }) => {
+export const getMonthData: GetMonthData = ({ date, today }) => {
   const firstDateInMonth = getFirstDateInMonth({ date });
   const lastDateInMonth = getLastDateInMonth({ date });
 
@@ -119,7 +122,8 @@ export const getMonthData: GetMonthData = ({ date }) => {
       date: nextDate,
       firstDateInMonth,
       lastDateInMonth,
-      selectedDate: date
+      selectedDate: date,
+      today
     });
     weeksInMonth.push(currentWeek);
 

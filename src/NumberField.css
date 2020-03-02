@@ -1,0 +1,16 @@
+.number {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+}
+
+.number > label {
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.33333;
+  color: rgb(107, 119, 140);
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 4px;
+  margin-top: 0px;
+}

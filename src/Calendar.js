@@ -48,7 +48,8 @@ function Week(props: WeekProps) {
 
 export default function Calendar(props: Props) {
   const { date } = props;
-  const weeksInMonth = getMonthData({ date });
+  const today = new Date();
+  const weeksInMonth = getMonthData({ date, today });
   const weeks = weeksInMonth.map((week, index) => (
     <Week key={`week_${index}`} days={week} />
   ));

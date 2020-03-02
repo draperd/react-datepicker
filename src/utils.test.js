@@ -84,11 +84,13 @@ describe("getWeekData", () => {
     const date = new Date("2019-01-02");
     const firstDateInMonth = getFirstDateOfWeek({ date });
     const lastDateInMonth = getLastDateInMonth({ date });
+    const today = new Date();
     const weekData = getWeekData({
       date,
       firstDateInMonth,
       lastDateInMonth,
-      selectedDate: date
+      selectedDate: date,
+      today
     });
     expect(weekData).toMatchSnapshot();
   });
@@ -97,9 +99,8 @@ describe("getWeekData", () => {
 describe("getMonthData", () => {
   it("gets correct data for month", () => {
     const date = new Date("2019-01-02");
-    const firstDateInMonth = getFirstDateOfWeek({ date });
-    const lastDateInMonth = getLastDateInMonth({ date });
-    const monthData = getMonthData({ date, firstDateInMonth, lastDateInMonth });
+    const today = new Date();
+    const monthData = getMonthData({ date, today });
     expect(monthData).toMatchSnapshot();
   });
 });

@@ -12,7 +12,14 @@ export type DayProps = {
 
 export default function Day(props: DayProps) {
   const { day } = props;
-  const { available, selected, isInCurrentMonth, dayOfMonth, date } = day;
+  const {
+    available,
+    selected,
+    isInCurrentMonth,
+    dayOfMonth,
+    date,
+    today
+  } = day;
 
   const classNames = [];
   if (selected) {
@@ -20,6 +27,12 @@ export default function Day(props: DayProps) {
   }
   if (isInCurrentMonth) {
     classNames.push("isInCurrentMonth");
+  }
+  if (today) {
+    classNames.push("today");
+  }
+  if (!available) {
+    classNames.push("unavailable");
   }
 
   return (

@@ -51,7 +51,8 @@ div.monthDisplay {
   color: #172b4d;
 }
 
-div.calendar {
+div.picker {
+  margin-top: 10px;
   width: 300px;
   background-color: #ffffff;
   padding: 16px;

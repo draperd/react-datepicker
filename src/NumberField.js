@@ -2,6 +2,7 @@
 import React from "react";
 import { DatePickerContext } from "./DatePicker";
 import type { InputFieldStateValue, OnChangeCreateAction } from "./types";
+import "./NumberField.css";
 
 export type NumberFieldProps = {
   label: string,
@@ -16,7 +17,7 @@ export default function NumberField(props: NumberFieldProps) {
       {context => {
         const { state, dispatch } = context;
         return (
-          <>
+          <div className="number">
             <label htmlFor={name}>{label}</label>
             <input
               id={name}
@@ -27,7 +28,7 @@ export default function NumberField(props: NumberFieldProps) {
                 dispatch(onChangeCreateAction({ value: evt.target.value }))
               }
             />
-          </>
+          </div>
         );
       }}
     </DatePickerContext.Consumer>

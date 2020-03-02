@@ -3,9 +3,22 @@
     "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
+.input-row {
+  display: flex;
+}
+
 .picker.visible {
   display: block;
 }
 .picker.hidden {
   display: none;
+}
+
+#day,
+#month {
+  width: 2rem;
+}
+
+#year {
+  width: 4rem;
 }

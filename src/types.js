@@ -32,7 +32,8 @@ export type CreateDayData = ({
   currentDate: Date,
   firstDateInMonth: Date,
   lastDateInMonth: Date,
-  selectedDate: Date
+  selectedDate: Date,
+  today: Date
 }) => DayData;
 
 export type WeekData = {
@@ -46,7 +47,8 @@ export type GetWeekData = ({
   date: Date,
   firstDateInMonth: Date,
   lastDateInMonth: Date,
-  selectedDate: Date
+  selectedDate: Date,
+  today: Date
 }) => WeekData;
 
 export type GetFirstDateOfWeek = ({ date: Date }) => Date;
@@ -55,7 +57,7 @@ export type GetFirstDateInMonth = ({ date: Date }) => Date;
 export type GetLastDateInMonth = ({ date: Date }) => Date;
 export type GetNextDay = ({ date: Date }) => Date;
 
-export type GetMonthData = ({ date: Date }) => WeekData[];
+export type GetMonthData = ({ date: Date, today: Date }) => WeekData[];
 
 export type State = {
   pickerIsVisible: boolean,
@@ -64,7 +66,8 @@ export type State = {
   selectedDate?: Date,
   dayInputFieldValue: number | "",
   monthInputFieldValue: number | "",
-  yearInputFieldValue: number | ""
+  yearInputFieldValue: number | "",
+  warning?: string
 };
 export type DatePickerProps = {
   value?: Date

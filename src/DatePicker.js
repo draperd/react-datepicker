@@ -104,9 +104,11 @@ export default function DatePicker(props: DatePickerProps) {
               Cancel
             </button>
           </div>
-          <div className="warnings">
-            <span>Warnings go here</span>
-          </div>
+          {state.warning && (
+            <div className="warnings">
+              <span>{state.warning}</span>
+            </div>
+          )}
           <Calendar date={state.proposedDate} />
         </div>
       </div>
