@@ -2,6 +2,8 @@
 
 import React from "react";
 import { getMonthData } from "./utils";
+import type { DayData, WeekData } from "./types";
+import "./Calendar.css";
 
 export type Props = {
   date: Date
@@ -23,18 +25,33 @@ function CalendarHeader() {
   );
 }
 
-function Week(props) {
+export type DayProps = {
+  day: DayData
+};
+
+function Day(props: DayProps) {
+  const { day } = props;
+  const { selected, dayOfMonth } = day;
+  const className = selected ? "selected" : "";
+  return <td className={className}>{dayOfMonth}</td>;
+}
+
+export type WeekProps = {
+  days: WeekData
+};
+
+function Week(props: WeekProps) {
   const { days } = props;
 
   return (
     <tr>
-      <td>{days[0].dayOfMonth}</td>
-      <td>{days[1].dayOfMonth}</td>
-      <td>{days[2].dayOfMonth}</td>
-      <td>{days[3].dayOfMonth}</td>
-      <td>{days[4].dayOfMonth}</td>
-      <td>{days[5].dayOfMonth}</td>
-      <td>{days[6].dayOfMonth}</td>
+      <Day day={days[0]} />
+      <Day day={days[1]} />
+      <Day day={days[2]} />
+      <Day day={days[3]} />
+      <Day day={days[4]} />
+      <Day day={days[5]} />
+      <Day day={days[6]} />
     </tr>
   );
 }
@@ -42,7 +59,9 @@ function Week(props) {
 export default function Calendar(props: Props) {
   const { date } = props;
   const weeksInMonth = getMonthData({ date });
-  const weeks = weeksInMonth.map(week => <Week days={week} />);
+  const weeks = weeksInMonth.map((week, index) => (
+    <Week key={`week_${index}`} days={week} />
+  ));
 
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();

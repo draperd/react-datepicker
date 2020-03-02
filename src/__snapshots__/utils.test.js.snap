@@ -32,7 +32,7 @@ Array [
       "date": 2019-01-01T13:00:00.000Z,
       "dayOfMonth": 2,
       "isInCurrentMonth": true,
-      "selected": false,
+      "selected": true,
       "today": false,
     },
     "4": Object {
@@ -326,7 +326,7 @@ Object {
     "date": 2019-01-02T00:00:00.000Z,
     "dayOfMonth": 2,
     "isInCurrentMonth": true,
-    "selected": false,
+    "selected": true,
     "today": false,
   },
   "4": Object {

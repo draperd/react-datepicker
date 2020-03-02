@@ -2,6 +2,7 @@
 
 // import React from "react";
 import {
+  datesAreEqual,
   getFirstDateInMonth,
   getFirstDateOfWeek,
   getLastDateInMonth,
@@ -15,6 +16,18 @@ import {
 // import chaiEnzyme from "chai-enzyme";
 
 // chai.use(chaiEnzyme());
+
+describe("datesAreEqual", () => {
+  const date1 = new Date("2020-03-04");
+  const date2 = new Date("2018-02-15");
+  it("should return true when dates are equal", () => {
+    expect(datesAreEqual({ date1, date2: date1 })).toBe(true);
+  });
+
+  it("should return false when dates are NOT equal", () => {
+    expect(datesAreEqual({ date1, date2 })).toBe(false);
+  });
+});
 
 describe("getFirstDateOfWeek", () => {
   it("should return correct date for Feb 2020", () => {
@@ -71,7 +84,12 @@ describe("getWeekData", () => {
     const date = new Date("2019-01-02");
     const firstDateInMonth = getFirstDateOfWeek({ date });
     const lastDateInMonth = getLastDateInMonth({ date });
-    const weekData = getWeekData({ date, firstDateInMonth, lastDateInMonth });
+    const weekData = getWeekData({
+      date,
+      firstDateInMonth,
+      lastDateInMonth,
+      selectedDate: date
+    });
     expect(weekData).toMatchSnapshot();
   });
 });

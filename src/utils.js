@@ -2,6 +2,7 @@
 
 import type {
   CreateDayData,
+  DatesAreEqual,
   DateIsBeforeFirstDateInMonth,
   DateIsAfterLastDateInMonth,
   DayData,
@@ -35,10 +36,19 @@ export const dateIsAfterLastDateInMonth: DateIsAfterLastDateInMonth = ({
   return currentDate > lastDateInMonth;
 };
 
+export const datesAreEqual: DatesAreEqual = ({ date1, date2 }) => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+};
+
 export const createDayData: CreateDayData = ({
   currentDate,
   firstDateInMonth,
-  lastDateInMonth
+  lastDateInMonth,
+  selectedDate
 }) => {
   const currentDateOutsideMonth =
     dateIsBeforeFirstDateInMonth({ currentDate, firstDateInMonth }) ||
@@ -48,7 +58,7 @@ export const createDayData: CreateDayData = ({
     dayOfMonth: currentDate.getDate(),
     isInCurrentMonth: !currentDateOutsideMonth,
     available: true,
-    selected: false,
+    selected: datesAreEqual({ date1: currentDate, date2: selectedDate }),
     today: false,
     date: currentDate
   };
@@ -59,7 +69,8 @@ export const createDayData: CreateDayData = ({
 export const getWeekData: GetWeekData = ({
   date,
   firstDateInMonth,
-  lastDateInMonth
+  lastDateInMonth,
+  selectedDate
 }) => {
   const firstDateInWeek = getFirstDateOfWeek({ date });
 
@@ -70,7 +81,8 @@ export const getWeekData: GetWeekData = ({
     const dayData = createDayData({
       currentDate,
       firstDateInMonth,
-      lastDateInMonth
+      lastDateInMonth,
+      selectedDate
     });
 
     const day = dayData.date.getDay();
@@ -104,10 +116,12 @@ export const getMonthData: GetMonthData = ({ date }) => {
     let currentWeek = getWeekData({
       date: nextDate,
       firstDateInMonth,
-      lastDateInMonth
+      lastDateInMonth,
+      selectedDate: date
     });
     weeksInMonth.push(currentWeek);
 
+    // TODO: Figure out why Saturday is sometimes missing !?
     let lastDateOfCurrentWeek = currentWeek[6].date;
     nextDate = getNextDay({ date: lastDateOfCurrentWeek });
   } while (nextDate < lastDateInMonth);
