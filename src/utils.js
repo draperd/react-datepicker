@@ -94,7 +94,9 @@ export const getWeekData: GetWeekData = ({
 };
 
 export const getNextDay: GetNextDay = ({ date }) => {
-  return new Date(date.getTime() + oneDayInMilliseconds);
+  const clonedDate = new Date(date.getTime());
+  clonedDate.setDate(date.getDate() + 1);
+  return clonedDate;
 };
 
 export const getFirstDateInMonth: GetFirstDateInMonth = ({ date }) => {
@@ -121,7 +123,6 @@ export const getMonthData: GetMonthData = ({ date }) => {
     });
     weeksInMonth.push(currentWeek);
 
-    // TODO: Figure out why Saturday is sometimes missing !?
     let lastDateOfCurrentWeek = currentWeek[6].date;
     nextDate = getNextDay({ date: lastDateOfCurrentWeek });
   } while (nextDate < lastDateInMonth);

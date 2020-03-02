@@ -1,5 +1,9 @@
 // @flow
 
+export const ON_DAY_CHANGED_ACTION = "onDayChanged";
+export const ON_MONTH_CHANGED_ACTION = "onMonthChanged";
+export const ON_YEAR_CHANGED_ACTION = "onYearChanged";
+
 export type DatesAreEqual = ({ date1: Date, date2: Date }) => boolean;
 export type DateIsBeforeFirstDateInMonth = ({
   currentDate: Date,
@@ -60,10 +64,6 @@ export type DatePickerProps = {
   value?: Date
 };
 
-export const ON_DAY_CHANGED_ACTION = "onDayChanged";
-export const ON_MONTH_CHANGED_ACTION = "onMonthChanged";
-export const ON_YEAR_CHANGED_ACTION = "onYearChanged";
-
 export type OnDayChangedAction = {
   type: typeof ON_DAY_CHANGED_ACTION,
   payload: {
@@ -108,6 +108,27 @@ export type Action =
   | OnYearChangedAction;
 
 export type DispatchAction = Action => void;
+
+export type ContextType = {
+  dispatch: DispatchAction,
+  state: State
+};
+
+export type CreateContext = ({
+  state: State,
+  dispatch: DispatchAction
+}) => ContextType;
+
+export type GetNewProposedDate = ({
+  proposedDate: Date,
+  value: number
+}) => Date;
+
+export type ReduceDatePartChanged = ({
+  state: State,
+  action: Action,
+  getNewProposedDate: GetNewProposedDate
+}) => State;
 
 export type ReduceOnDayChanged = ({
   state: State,

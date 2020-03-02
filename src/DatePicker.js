@@ -1,26 +1,15 @@
 // @flow
 
 import React, { useReducer } from "react";
-import { getLastDateInMonth } from "./utils";
 import Calendar from "./Calendar";
 import NumberField from "./NumberField";
-import type {
-  Action,
-  CreateOnDayChangedAction,
-  CreateOnMonthChangedAction,
-  CreateOnYearChangedAction,
-  DatePickerProps,
-  DispatchAction,
-  ReduceOnDayChanged,
-  ReduceOnMonthChanged,
-  ReduceOnYearChanged,
-  State
-} from "./types";
 import {
-  ON_DAY_CHANGED_ACTION,
-  ON_MONTH_CHANGED_ACTION,
-  ON_YEAR_CHANGED_ACTION
-} from "./types";
+  createOnDayChangedAction,
+  createOnMonthChangedAction,
+  createOnYearChangedAction,
+  reducer
+} from "./reducer";
+import type { CreateContext, DatePickerProps, State } from "./types";
 
 /* THINGS TO DO:
  * - onBlur input fields to ensure empty number fields get populated with a suitable value
@@ -31,169 +20,10 @@ import {
 // $FlowFixMe
 export const DatePickerContext = React.createContext();
 
-export const createOnDayChangedAction: CreateOnDayChangedAction = ({
-  value
-}) => {
-  return {
-    type: ON_DAY_CHANGED_ACTION,
-    payload: {
-      value
-    }
-  };
-};
-
-export const createOnMonthChangedAction: CreateOnMonthChangedAction = ({
-  value
-}) => {
-  return {
-    type: ON_MONTH_CHANGED_ACTION,
-    payload: {
-      value
-    }
-  };
-};
-
-export const createOnYearChangedAction: CreateOnYearChangedAction = ({
-  value
-}) => {
-  return {
-    type: ON_YEAR_CHANGED_ACTION,
-    payload: {
-      value
-    }
-  };
-};
-
-export type ContextType = {
-  dispatch: DispatchAction,
-  state: State
-};
-
-export type CreateContext = ({
-  state: State,
-  dispatch: DispatchAction
-}) => ContextType;
-
 export const createContext: CreateContext = ({ state, dispatch }) => ({
   state,
   dispatch
 });
-
-// Actions to handle
-// - select date
-// - clear date
-// - next month
-// - previous month
-// - set day
-// - set month
-// - set year
-
-const reduceOnDayChanged: ReduceOnDayChanged = ({ state, action }) => {
-  const { proposedDate } = state;
-  let {
-    payload: { value }
-  } = action;
-
-  if (value === "") {
-    return {
-      ...state,
-      dayInputFieldValue: value
-    };
-  }
-
-  const lastDateInProposedMonth = getLastDateInMonth({ date: proposedDate });
-  const lastDayInMonth = lastDateInProposedMonth.getDate();
-
-  // TODO: Do we want to clock over to the next month?
-  if (value > lastDayInMonth) {
-    value = lastDayInMonth;
-  }
-
-  const updatedProposedDate = new Date(
-    proposedDate.getFullYear(),
-    proposedDate.getMonth(),
-    value
-  );
-
-  return {
-    ...state,
-    proposedDate: updatedProposedDate,
-    dayInputFieldValue: value
-  };
-};
-
-const reduceOnMonthChanged: ReduceOnMonthChanged = ({ state, action }) => {
-  const { proposedDate } = state;
-  let {
-    payload: { value }
-  } = action;
-
-  if (value === "") {
-    return {
-      ...state,
-      monthInputFieldValue: value
-    };
-  }
-
-  if (value > 12) {
-    value = 12;
-  }
-
-  // TODO: What happens if the new month cannot handle the already set number of days?
-  const updatedProposedDate = new Date(
-    proposedDate.getFullYear(),
-    value - 1,
-    proposedDate.getDate()
-  );
-
-  return {
-    ...state,
-    proposedDate: updatedProposedDate,
-    monthInputFieldValue: value
-  };
-};
-
-const reduceOnYearChanged: ReduceOnYearChanged = ({ state, action }) => {
-  const { proposedDate } = state;
-  let {
-    payload: { value }
-  } = action;
-
-  if (value === "" || value < 1000) {
-    return {
-      ...state,
-      yearInputFieldValue: value
-    };
-  }
-
-  const updatedProposedDate = new Date(
-    value,
-    proposedDate.getMonth(),
-    proposedDate.getDate()
-  );
-
-  return {
-    ...state,
-    yearInputFieldValue: value,
-    proposedDate: updatedProposedDate
-  };
-};
-
-function fieldsReducer(state: State, action: Action) {
-  switch (action.type) {
-    case ON_DAY_CHANGED_ACTION: {
-      return reduceOnDayChanged({ state, action });
-    }
-    case ON_MONTH_CHANGED_ACTION: {
-      return reduceOnMonthChanged({ state, action });
-    }
-    case ON_YEAR_CHANGED_ACTION: {
-      return reduceOnYearChanged({ state, action });
-    }
-    default:
-      return state;
-  }
-}
 
 export default function DatePicker(props: DatePickerProps) {
   const { value } = props;
@@ -211,7 +41,7 @@ export default function DatePicker(props: DatePickerProps) {
     monthInputFieldValue,
     yearInputFieldValue
   };
-  const [state, dispatch] = useReducer(fieldsReducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const context = createContext({ state, dispatch });
 
   return (

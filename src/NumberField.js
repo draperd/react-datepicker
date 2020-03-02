@@ -22,7 +22,6 @@ export default function NumberField(props: NumberFieldProps) {
               id={name}
               type="number"
               name={name}
-              min="1"
               value={state[valueAttributeInState]}
               onChange={evt =>
                 dispatch(onChangeCreateAction({ value: evt.target.value }))
