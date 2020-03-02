@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import Textfield from "@atlaskit/textfield";
 import { DatePickerContext } from "./DatePicker";
 import type { InputFieldStateValue, OnChangeCreateAction } from "./types";
 import "./NumberField.css";
@@ -19,14 +20,14 @@ export default function NumberField(props: NumberFieldProps) {
         return (
           <div className="number">
             <label htmlFor={name}>{label}</label>
-            <input
-              id={name}
-              type="number"
+            <Textfield
               name={name}
+              type="number"
               value={state[valueAttributeInState]}
               onChange={evt =>
                 dispatch(onChangeCreateAction({ value: evt.target.value }))
               }
+              isCompact
             />
           </div>
         );
