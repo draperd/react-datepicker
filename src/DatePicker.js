@@ -38,6 +38,7 @@ export default function DatePicker(props: DatePickerProps) {
   const yearInputFieldValue = proposedDate.getFullYear();
 
   const initialState: State = {
+    isValid: true,
     pickerIsVisible: false,
     selectedDate: value, // This could legitimately be undefined when no date is set
     proposedDate,
@@ -48,11 +49,14 @@ export default function DatePicker(props: DatePickerProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const context = createContext({ state, dispatch });
 
+  const displayValue = state.selectedDate
+    ? state.selectedDate.toDateString()
+    : "";
   return (
     <DatePickerContext.Provider value={context}>
       <div className="main">
         <div className="display">
-          <span>{proposedDate.toDateString()}</span>
+          <span>{displayValue}</span>
           <button
             type="button"
             onClick={evt => dispatch(createShowPickerAction())}
@@ -83,7 +87,9 @@ export default function DatePicker(props: DatePickerProps) {
               onChangeCreateAction={createOnYearChangedAction}
               valueAttributeInState="yearInputFieldValue"
             />
-            <button type="button">Set</button>
+            <button type="button" disabled={!state.isValid}>
+              Set
+            </button>
             <button
               type="button"
               onClick={evt => dispatch(createHidePickerAction())}

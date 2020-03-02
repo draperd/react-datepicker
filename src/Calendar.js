@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import Day from "./Day";
 import { getMonthData } from "./utils";
 import type { DayData, WeekData } from "./types";
 import "./Calendar.css";
@@ -23,17 +24,6 @@ function CalendarHeader() {
       </tr>
     </thead>
   );
-}
-
-export type DayProps = {
-  day: DayData
-};
-
-function Day(props: DayProps) {
-  const { day } = props;
-  const { selected, dayOfMonth } = day;
-  const className = selected ? "selected" : "";
-  return <td className={className}>{dayOfMonth}</td>;
 }
 
 export type WeekProps = {

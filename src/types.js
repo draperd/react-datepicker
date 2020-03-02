@@ -5,6 +5,7 @@ export const HIDE_PICKER_ACTION = "hidePicker";
 export const ON_DAY_CHANGED_ACTION = "onDayChanged";
 export const ON_MONTH_CHANGED_ACTION = "onMonthChanged";
 export const ON_YEAR_CHANGED_ACTION = "onYearChanged";
+export const SELECT_DATE_ACTION = "selectDate";
 
 export type DatesAreEqual = ({ date1: Date, date2: Date }) => boolean;
 export type DateIsBeforeFirstDateInMonth = ({
@@ -57,6 +58,7 @@ export type GetMonthData = ({ date: Date }) => WeekData[];
 
 export type State = {
   pickerIsVisible: boolean,
+  isValid: boolean,
   proposedDate: Date,
   selectedDate?: Date,
   dayInputFieldValue: number | "",
@@ -93,6 +95,12 @@ export type OnYearChangedAction = {
     value: number
   }
 };
+export type SelectDateAction = {
+  type: typeof SELECT_DATE_ACTION,
+  payload: {
+    date: Date
+  }
+};
 
 export type CreateShowPickerAction = () => ShowPickerAction;
 export type CreateHidePickerAction = () => HidePickerAction;
@@ -105,6 +113,7 @@ export type CreateOnMonthChangedAction = ({
 export type CreateOnYearChangedAction = ({
   value: number
 }) => OnYearChangedAction;
+export type CreateSelectDateAction = ({ date: Date }) => SelectDateAction;
 
 export type OnChangeCreateAction =
   | CreateOnDayChangedAction
@@ -120,7 +129,8 @@ export type Action =
   | ShowPickerAction
   | OnDayChangedAction
   | OnMonthChangedAction
-  | OnYearChangedAction;
+  | OnYearChangedAction
+  | SelectDateAction;
 
 export type DispatchAction = Action => void;
 
@@ -168,4 +178,9 @@ export type ReduceHidePicker = ({
 export type ReduceShowPicker = ({
   state: State,
   action: ShowPickerAction
+}) => State;
+
+export type ReduceSelectDate = ({
+  state: State,
+  action: SelectDateAction
 }) => State;
