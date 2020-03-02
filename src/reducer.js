@@ -2,10 +2,14 @@
 
 import type {
   Action,
+  CreateHidePickerAction,
+  CreateShowPickerAction,
   CreateOnDayChangedAction,
   CreateOnMonthChangedAction,
   CreateOnYearChangedAction,
   GetNewProposedDate,
+  ReduceHidePicker,
+  ReduceShowPicker,
   ReduceDatePartChanged,
   ReduceOnDayChanged,
   ReduceOnMonthChanged,
@@ -13,10 +17,24 @@ import type {
   State
 } from "./types";
 import {
+  HIDE_PICKER_ACTION,
+  SHOW_PICKER_ACTION,
   ON_DAY_CHANGED_ACTION,
   ON_MONTH_CHANGED_ACTION,
   ON_YEAR_CHANGED_ACTION
 } from "./types";
+
+export const createHidePickerAction: CreateHidePickerAction = () => {
+  return {
+    type: HIDE_PICKER_ACTION
+  };
+};
+
+export const createShowPickerAction: CreateShowPickerAction = () => {
+  return {
+    type: SHOW_PICKER_ACTION
+  };
+};
 
 export const createOnDayChangedAction: CreateOnDayChangedAction = ({
   value
@@ -137,8 +155,28 @@ const reduceOnYearChanged: ReduceOnYearChanged = ({ state, action }) => {
   });
 };
 
+const reduceHidePicker: ReduceHidePicker = ({ state, action }) => {
+  return {
+    ...state,
+    pickerIsVisible: false
+  };
+};
+
+const reduceShowPicker: ReduceShowPicker = ({ state, action }) => {
+  return {
+    ...state,
+    pickerIsVisible: true
+  };
+};
+
 export function reducer(state: State, action: Action) {
   switch (action.type) {
+    case HIDE_PICKER_ACTION: {
+      return reduceHidePicker({ state, action });
+    }
+    case SHOW_PICKER_ACTION: {
+      return reduceShowPicker({ state, action });
+    }
     case ON_DAY_CHANGED_ACTION: {
       return reduceOnDayChanged({ state, action });
     }

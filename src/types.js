@@ -1,5 +1,7 @@
 // @flow
 
+export const SHOW_PICKER_ACTION = "showPicker";
+export const HIDE_PICKER_ACTION = "hidePicker";
 export const ON_DAY_CHANGED_ACTION = "onDayChanged";
 export const ON_MONTH_CHANGED_ACTION = "onMonthChanged";
 export const ON_YEAR_CHANGED_ACTION = "onYearChanged";
@@ -54,6 +56,7 @@ export type GetNextDay = ({ date: Date }) => Date;
 export type GetMonthData = ({ date: Date }) => WeekData[];
 
 export type State = {
+  pickerIsVisible: boolean,
   proposedDate: Date,
   selectedDate?: Date,
   dayInputFieldValue: number | "",
@@ -62,6 +65,14 @@ export type State = {
 };
 export type DatePickerProps = {
   value?: Date
+};
+
+export type ShowPickerAction = {
+  type: typeof SHOW_PICKER_ACTION
+};
+
+export type HidePickerAction = {
+  type: typeof HIDE_PICKER_ACTION
 };
 
 export type OnDayChangedAction = {
@@ -83,6 +94,8 @@ export type OnYearChangedAction = {
   }
 };
 
+export type CreateShowPickerAction = () => ShowPickerAction;
+export type CreateHidePickerAction = () => HidePickerAction;
 export type CreateOnDayChangedAction = ({
   value: number
 }) => OnDayChangedAction;
@@ -103,6 +116,8 @@ export type InputFieldStateValue =
   | "yearInputFieldValue";
 
 export type Action =
+  | HidePickerAction
+  | ShowPickerAction
   | OnDayChangedAction
   | OnMonthChangedAction
   | OnYearChangedAction;
@@ -126,7 +141,7 @@ export type GetNewProposedDate = ({
 
 export type ReduceDatePartChanged = ({
   state: State,
-  action: Action,
+  action: OnDayChangedAction | OnMonthChangedAction | OnYearChangedAction,
   getNewProposedDate: GetNewProposedDate
 }) => State;
 
@@ -143,4 +158,14 @@ export type ReduceOnMonthChanged = ({
 export type ReduceOnYearChanged = ({
   state: State,
   action: OnYearChangedAction
+}) => State;
+
+export type ReduceHidePicker = ({
+  state: State,
+  action: HidePickerAction
+}) => State;
+
+export type ReduceShowPicker = ({
+  state: State,
+  action: ShowPickerAction
 }) => State;

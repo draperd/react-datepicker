@@ -1,0 +1,6 @@
+.picker.visible {
+  display: block;
+}
+.picker.hidden {
+  display: none;
+}

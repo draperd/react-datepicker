@@ -4,12 +4,15 @@ import React, { useReducer } from "react";
 import Calendar from "./Calendar";
 import NumberField from "./NumberField";
 import {
+  createShowPickerAction,
+  createHidePickerAction,
   createOnDayChangedAction,
   createOnMonthChangedAction,
   createOnYearChangedAction,
   reducer
 } from "./reducer";
 import type { CreateContext, DatePickerProps, State } from "./types";
+import "./DatePicker.css";
 
 /* THINGS TO DO:
  * - onBlur input fields to ensure empty number fields get populated with a suitable value
@@ -35,6 +38,7 @@ export default function DatePicker(props: DatePickerProps) {
   const yearInputFieldValue = proposedDate.getFullYear();
 
   const initialState: State = {
+    pickerIsVisible: false,
     selectedDate: value, // This could legitimately be undefined when no date is set
     proposedDate,
     dayInputFieldValue,
@@ -46,38 +50,52 @@ export default function DatePicker(props: DatePickerProps) {
 
   return (
     <DatePickerContext.Provider value={context}>
-      <div className="App">
+      <div className="main">
         <div className="display">
           <span>{proposedDate.toDateString()}</span>
-          <button type="button">Edit</button>
+          <button
+            type="button"
+            onClick={evt => dispatch(createShowPickerAction())}
+          >
+            Edit
+          </button>
           <button type="button">Clear</button>
         </div>
-        <div className="input-row">
-          <NumberField
-            label="Day"
-            name="day"
-            onChangeCreateAction={createOnDayChangedAction}
-            valueAttributeInState="dayInputFieldValue"
-          />
-          <NumberField
-            label="Month"
-            name="month"
-            onChangeCreateAction={createOnMonthChangedAction}
-            valueAttributeInState="monthInputFieldValue"
-          />
-          <NumberField
-            label="Year"
-            name="year"
-            onChangeCreateAction={createOnYearChangedAction}
-            valueAttributeInState="yearInputFieldValue"
-          />
-          <button type="button">Set</button>
-          <button type="button">Cancel</button>
+        <div
+          className={`picker ${state.pickerIsVisible ? "visible" : "hidden"}`}
+        >
+          <div className="input-row">
+            <NumberField
+              label="Day"
+              name="day"
+              onChangeCreateAction={createOnDayChangedAction}
+              valueAttributeInState="dayInputFieldValue"
+            />
+            <NumberField
+              label="Month"
+              name="month"
+              onChangeCreateAction={createOnMonthChangedAction}
+              valueAttributeInState="monthInputFieldValue"
+            />
+            <NumberField
+              label="Year"
+              name="year"
+              onChangeCreateAction={createOnYearChangedAction}
+              valueAttributeInState="yearInputFieldValue"
+            />
+            <button type="button">Set</button>
+            <button
+              type="button"
+              onClick={evt => dispatch(createHidePickerAction())}
+            >
+              Cancel
+            </button>
+          </div>
+          <div className="warnings">
+            <span>Warnings go here</span>
+          </div>
+          <Calendar date={state.proposedDate} />
         </div>
-        <div className="warnings">
-          <span>Warnings go here</span>
-        </div>
-        <Calendar date={state.proposedDate} />
       </div>
     </DatePickerContext.Provider>
   );
