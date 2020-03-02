@@ -1,7 +1,12 @@
 // @flow
 
 import React from "react";
+import Button from "@atlaskit/button";
+import ChevronRightIcon from "@atlaskit/icon/glyph/chevron-right";
+import ChevronLeftIcon from "@atlaskit/icon/glyph/chevron-left";
+import { DatePickerContext } from "./DatePicker";
 import Day from "./Day";
+import { createOnMonthChangedAction } from "./reducer";
 import { getMonthData } from "./utils";
 import type { CalendarProps, WeekData } from "./types";
 import "./Calendar.css";
@@ -58,15 +63,40 @@ export default function Calendar(props: CalendarProps) {
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
 
+  // NOTE: Months are zero-indexed, but the month field is not hence adding 2 and not substracting anything!
+  const nextMonth = date.getMonth() + 2;
+  const previousMonth = date.getMonth();
   return (
-    <div className="calendar">
-      <div className="monthDisplay">
-        {month} {year}
-      </div>
-      <table className="week">
-        <CalendarHeader />
-        <tbody>{weeks}</tbody>
-      </table>
-    </div>
+    <DatePickerContext.Consumer>
+      {context => {
+        const { dispatch } = context;
+        return (
+          <div className="calendar">
+            <div className="monthDisplay">
+              <Button
+                iconBefore={<ChevronLeftIcon size="small" />}
+                onClick={evt =>
+                  dispatch(createOnMonthChangedAction({ value: previousMonth }))
+                }
+              />
+              <span>
+                {month} {year}
+              </span>
+
+              <Button
+                iconBefore={<ChevronRightIcon size="small" />}
+                onClick={evt =>
+                  dispatch(createOnMonthChangedAction({ value: nextMonth }))
+                }
+              />
+            </div>
+            <table className="week">
+              <CalendarHeader />
+              <tbody>{weeks}</tbody>
+            </table>
+          </div>
+        );
+      }}
+    </DatePickerContext.Consumer>
   );
 }

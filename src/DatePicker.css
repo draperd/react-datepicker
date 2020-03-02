@@ -16,6 +16,7 @@
 .warnings {
   color: #de350b;
   font-weight: bold;
+  margin: 10px 0;
 }
 
 .input-row {

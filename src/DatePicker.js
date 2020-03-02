@@ -112,16 +112,16 @@ export default function DatePicker(props: DatePickerProps) {
               />
             </ButtonGroup>
           </div>
-          {state.warning && (
-            <div className="warnings">
-              <span>{state.warning}</span>
-            </div>
-          )}
           <Calendar
             date={state.proposedDate}
             earliestAllowedDate={state.earliestAllowedDate}
             latestAllowedDate={state.latestAllowedDate}
           />
+          {state.warning && (
+            <div className="warnings">
+              <span>{state.warning}</span>
+            </div>
+          )}
         </div>
       </div>
     </DatePickerContext.Provider>
