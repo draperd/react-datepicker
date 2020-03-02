@@ -14,13 +14,13 @@ function CalendarHeader() {
   return (
     <thead>
       <tr>
-        <th>S</th>
-        <th>M</th>
-        <th>T</th>
-        <th>W</th>
-        <th>T</th>
-        <th>F</th>
-        <th>S</th>
+        <th>SUN</th>
+        <th>MON</th>
+        <th>TUE</th>
+        <th>WED</th>
+        <th>THU</th>
+        <th>FRI</th>
+        <th>SAT</th>
       </tr>
     </thead>
   );
@@ -58,7 +58,7 @@ export default function Calendar(props: Props) {
 
   return (
     <div className="calendar">
-      <div>
+      <div className="monthDisplay">
         {month} {year}
       </div>
       <table className="week">

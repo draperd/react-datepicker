@@ -12,19 +12,23 @@ export type DayProps = {
 
 export default function Day(props: DayProps) {
   const { day } = props;
-  const { selected, dayOfMonth, date } = day;
-  const className = selected ? "selected" : "";
+  const { available, selected, isInCurrentMonth, dayOfMonth, date } = day;
+
+  const classNames = [];
+  if (selected) {
+    classNames.push("selected");
+  }
+  if (isInCurrentMonth) {
+    classNames.push("isInCurrentMonth");
+  }
 
   return (
     <DatePickerContext.Consumer>
       {context => {
         const { dispatch } = context;
         return (
-          <td
-            className={className}
-            onClick={evt => dispatch(createSelectDateAction({ date }))}
-          >
-            {dayOfMonth}
+          <td onClick={evt => dispatch(createSelectDateAction({ date }))}>
+            <div className={classNames.join(" ")}>{dayOfMonth}</div>
           </td>
         );
       }}
