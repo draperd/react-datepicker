@@ -6,6 +6,7 @@ export const ON_DAY_CHANGED_ACTION = "onDayChanged";
 export const ON_MONTH_CHANGED_ACTION = "onMonthChanged";
 export const ON_YEAR_CHANGED_ACTION = "onYearChanged";
 export const SELECT_DATE_ACTION = "selectDate";
+export const CLEAR_DATE_ACTION = "clearDate";
 
 export type DatesAreEqual = ({ date1: Date, date2: Date }) => boolean;
 export type DateIsBeforeFirstDateInMonth = ({
@@ -102,6 +103,10 @@ export type SelectDateAction = {
   }
 };
 
+export type ClearDateAction = {
+  type: typeof CLEAR_DATE_ACTION
+};
+
 export type CreateShowPickerAction = () => ShowPickerAction;
 export type CreateHidePickerAction = () => HidePickerAction;
 export type CreateOnDayChangedAction = ({
@@ -114,6 +119,7 @@ export type CreateOnYearChangedAction = ({
   value: number
 }) => OnYearChangedAction;
 export type CreateSelectDateAction = ({ date: Date }) => SelectDateAction;
+export type CreateClearDateAction = () => ClearDateAction;
 
 export type OnChangeCreateAction =
   | CreateOnDayChangedAction
@@ -130,7 +136,8 @@ export type Action =
   | OnDayChangedAction
   | OnMonthChangedAction
   | OnYearChangedAction
-  | SelectDateAction;
+  | SelectDateAction
+  | ClearDateAction;
 
 export type DispatchAction = Action => void;
 
@@ -184,3 +191,5 @@ export type ReduceSelectDate = ({
   state: State,
   action: SelectDateAction
 }) => State;
+
+export type ReduceClearDate = ({ state: State, action: Action }) => State;

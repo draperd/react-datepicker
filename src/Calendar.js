@@ -3,7 +3,7 @@
 import React from "react";
 import Day from "./Day";
 import { getMonthData } from "./utils";
-import type { DayData, WeekData } from "./types";
+import type { WeekData } from "./types";
 import "./Calendar.css";
 
 export type Props = {

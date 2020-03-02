@@ -9,6 +9,7 @@ import {
   createOnDayChangedAction,
   createOnMonthChangedAction,
   createOnYearChangedAction,
+  createClearDateAction,
   reducer
 } from "./reducer";
 import type { CreateContext, DatePickerProps, State } from "./types";
@@ -63,7 +64,12 @@ export default function DatePicker(props: DatePickerProps) {
           >
             Edit
           </button>
-          <button type="button">Clear</button>
+          <button
+            type="button"
+            onClick={evt => dispatch(createClearDateAction())}
+          >
+            Clear
+          </button>
         </div>
         <div
           className={`picker ${state.pickerIsVisible ? "visible" : "hidden"}`}

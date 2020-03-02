@@ -2,6 +2,7 @@
 
 import type {
   Action,
+  CreateClearDateAction,
   CreateHidePickerAction,
   CreateShowPickerAction,
   CreateOnDayChangedAction,
@@ -16,9 +17,11 @@ import type {
   ReduceOnMonthChanged,
   ReduceOnYearChanged,
   ReduceSelectDate,
+  ReduceClearDate,
   State
 } from "./types";
 import {
+  CLEAR_DATE_ACTION,
   HIDE_PICKER_ACTION,
   SHOW_PICKER_ACTION,
   ON_DAY_CHANGED_ACTION,
@@ -78,6 +81,12 @@ export const createSelectDateAction: CreateSelectDateAction = ({ date }) => {
     payload: {
       date
     }
+  };
+};
+
+export const createClearDateAction: CreateClearDateAction = () => {
+  return {
+    type: CLEAR_DATE_ACTION
   };
 };
 
@@ -197,6 +206,19 @@ const reduceSelectDate: ReduceSelectDate = ({ state, action }) => {
   };
 };
 
+const reduceClearDate: ReduceClearDate = ({ state, action }) => {
+  const date = new Date();
+  return {
+    ...state,
+    pickerIsVisible: false,
+    selectedDate: undefined,
+    proposedDate: date,
+    dayInputFieldValue: date.getDate(),
+    monthInputFieldValue: date.getMonth() + 1,
+    yearInputFieldValue: date.getFullYear()
+  };
+};
+
 export function reducer(state: State, action: Action) {
   switch (action.type) {
     case HIDE_PICKER_ACTION: {
@@ -216,6 +238,9 @@ export function reducer(state: State, action: Action) {
     }
     case SELECT_DATE_ACTION: {
       return reduceSelectDate({ state, action });
+    }
+    case CLEAR_DATE_ACTION: {
+      return reduceClearDate({ state, action });
     }
     default:
       return state;

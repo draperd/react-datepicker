@@ -3,7 +3,7 @@
 import React from "react";
 import { DatePickerContext } from "./DatePicker";
 import { createSelectDateAction } from "./reducer";
-import type { DayData, WeekData } from "./types";
+import type { DayData } from "./types";
 import "./Day.css";
 
 export type DayProps = {
@@ -18,7 +18,7 @@ export default function Day(props: DayProps) {
   return (
     <DatePickerContext.Consumer>
       {context => {
-        const { state, dispatch } = context;
+        const { dispatch } = context;
         return (
           <td
             className={className}
