@@ -90,15 +90,6 @@ export const createClearDateAction: CreateClearDateAction = () => {
   };
 };
 
-// Actions to handle
-// - select date
-// - clear date
-// - next month
-// - previous month
-// - set day
-// - set month
-// - set year
-
 export const getNewProposedDateForDayChange: GetNewProposedDate = ({
   proposedDate,
   value

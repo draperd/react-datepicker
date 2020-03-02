@@ -10,16 +10,11 @@ import {
   createOnMonthChangedAction,
   createOnYearChangedAction,
   createClearDateAction,
-  reducer
+  reducer,
+  createSelectDateAction
 } from "./reducer";
 import type { CreateContext, DatePickerProps, State } from "./types";
 import "./DatePicker.css";
-
-/* THINGS TO DO:
- * - onBlur input fields to ensure empty number fields get populated with a suitable value
- * - allow date changes to increment / decrement month and year
- * - allow month / year changes to correct a day (e.g. if month cannot handle 30/31 days or 29 days for non-leap year Febs)
- */
 
 // $FlowFixMe
 export const DatePickerContext = React.createContext();
@@ -93,7 +88,13 @@ export default function DatePicker(props: DatePickerProps) {
               onChangeCreateAction={createOnYearChangedAction}
               valueAttributeInState="yearInputFieldValue"
             />
-            <button type="button" disabled={!state.isValid}>
+            <button
+              type="button"
+              disabled={!state.isValid}
+              onClick={evt =>
+                dispatch(createSelectDateAction({ date: state.proposedDate }))
+              }
+            >
               Set
             </button>
             <button
