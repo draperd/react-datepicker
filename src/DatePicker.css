@@ -13,6 +13,11 @@
   padding: 3px;
 }
 
+.warnings {
+  color: #de350b;
+  font-weight: bold;
+}
+
 .input-row {
   display: flex;
   align-items: flex-end;

@@ -1,5 +1,5 @@
 // @flow
-
+import { dateIsAvailable } from "./utils";
 import type {
   Action,
   CreateClearDateAction,
@@ -120,7 +120,7 @@ const reduceDatePartChanged: ReduceDatePartChanged = ({
   action,
   getNewProposedDate
 }) => {
-  const { proposedDate } = state;
+  const { proposedDate, earliestAllowedDate, latestAllowedDate } = state;
   let {
     payload: { value }
   } = action;
@@ -128,14 +128,36 @@ const reduceDatePartChanged: ReduceDatePartChanged = ({
   if (value === "") {
     return {
       ...state,
+      isValid: false,
+      warning: "You need to provide a full date",
       dayInputFieldValue: value
     };
   }
 
   const updatedProposedDate = getNewProposedDate({ proposedDate, value });
 
+  if (
+    !dateIsAvailable({
+      date: updatedProposedDate,
+      earliestAllowedDate,
+      latestAllowedDate
+    })
+  ) {
+    return {
+      ...state,
+      isValid: false,
+      warning: "You need to select a date within the allowed range",
+      proposedDate: updatedProposedDate,
+      dayInputFieldValue: updatedProposedDate.getDate(),
+      monthInputFieldValue: updatedProposedDate.getMonth() + 1,
+      yearInputFieldValue: updatedProposedDate.getFullYear()
+    };
+  }
+
   return {
     ...state,
+    isValid: true,
+    warning: "",
     proposedDate: updatedProposedDate,
     dayInputFieldValue: updatedProposedDate.getDate(),
     monthInputFieldValue: updatedProposedDate.getMonth() + 1,
