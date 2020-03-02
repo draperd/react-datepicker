@@ -30,7 +30,7 @@ export const createContext: CreateContext = ({ state, dispatch }) => ({
 });
 
 export default function DatePicker(props: DatePickerProps) {
-  const { value } = props;
+  const { value, earliestAllowedDate, latestAllowedDate } = props;
 
   const proposedDate = value || new Date(); // Default to today when there is no value provided
 
@@ -45,7 +45,9 @@ export default function DatePicker(props: DatePickerProps) {
     proposedDate,
     dayInputFieldValue,
     monthInputFieldValue,
-    yearInputFieldValue
+    yearInputFieldValue,
+    earliestAllowedDate,
+    latestAllowedDate
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   const context = createContext({ state, dispatch });
@@ -115,7 +117,11 @@ export default function DatePicker(props: DatePickerProps) {
               <span>{state.warning}</span>
             </div>
           )}
-          <Calendar date={state.proposedDate} />
+          <Calendar
+            date={state.proposedDate}
+            earliestAllowedDate={state.earliestAllowedDate}
+            latestAllowedDate={state.latestAllowedDate}
+          />
         </div>
       </div>
     </DatePickerContext.Provider>

@@ -33,7 +33,9 @@ export type CreateDayData = ({
   firstDateInMonth: Date,
   lastDateInMonth: Date,
   selectedDate: Date,
-  today: Date
+  today: Date,
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date
 }) => DayData;
 
 export type WeekData = {
@@ -43,12 +45,20 @@ export type WeekData = {
 export type GetFirstDayOfMonth = Date => number;
 export type GetLastDateOfPreviousMonth = Date => number;
 
+export type DateIsAvailable = ({
+  date: Date,
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date
+}) => boolean;
+
 export type GetWeekData = ({
   date: Date,
   firstDateInMonth: Date,
   lastDateInMonth: Date,
   selectedDate: Date,
-  today: Date
+  today: Date,
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date
 }) => WeekData;
 
 export type GetFirstDateOfWeek = ({ date: Date }) => Date;
@@ -57,9 +67,16 @@ export type GetFirstDateInMonth = ({ date: Date }) => Date;
 export type GetLastDateInMonth = ({ date: Date }) => Date;
 export type GetNextDay = ({ date: Date }) => Date;
 
-export type GetMonthData = ({ date: Date, today: Date }) => WeekData[];
+export type GetMonthData = ({
+  date: Date,
+  today: Date,
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date
+}) => WeekData[];
 
 export type State = {
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date,
   pickerIsVisible: boolean,
   isValid: boolean,
   proposedDate: Date,
@@ -70,7 +87,15 @@ export type State = {
   warning?: string
 };
 export type DatePickerProps = {
-  value?: Date
+  value?: Date,
+  isDisabled?: boolean, // TODO: This needs handling
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date
+};
+export type CalendarProps = {
+  date: Date,
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date
 };
 
 export type ShowPickerAction = {

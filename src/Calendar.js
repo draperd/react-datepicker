@@ -3,12 +3,8 @@
 import React from "react";
 import Day from "./Day";
 import { getMonthData } from "./utils";
-import type { WeekData } from "./types";
+import type { CalendarProps, WeekData } from "./types";
 import "./Calendar.css";
-
-export type Props = {
-  date: Date
-};
 
 function CalendarHeader() {
   return (
@@ -46,10 +42,15 @@ function Week(props: WeekProps) {
   );
 }
 
-export default function Calendar(props: Props) {
-  const { date } = props;
+export default function Calendar(props: CalendarProps) {
+  const { date, earliestAllowedDate, latestAllowedDate } = props;
   const today = new Date();
-  const weeksInMonth = getMonthData({ date, today });
+  const weeksInMonth = getMonthData({
+    date,
+    today,
+    earliestAllowedDate,
+    latestAllowedDate
+  });
   const weeks = weeksInMonth.map((week, index) => (
     <Week key={`week_${index}`} days={week} />
   ));

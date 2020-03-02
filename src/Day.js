@@ -40,7 +40,11 @@ export default function Day(props: DayProps) {
       {context => {
         const { dispatch } = context;
         return (
-          <td onClick={evt => dispatch(createSelectDateAction({ date }))}>
+          <td
+            onClick={evt =>
+              available && dispatch(createSelectDateAction({ date }))
+            }
+          >
             <div className={classNames.join(" ")}>{dayOfMonth}</div>
           </td>
         );

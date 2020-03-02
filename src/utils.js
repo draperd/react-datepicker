@@ -3,6 +3,7 @@
 import type {
   CreateDayData,
   DatesAreEqual,
+  DateIsAvailable,
   DateIsBeforeFirstDateInMonth,
   DateIsAfterLastDateInMonth,
   DayData,
@@ -44,12 +45,28 @@ export const datesAreEqual: DatesAreEqual = ({ date1, date2 }) => {
   );
 };
 
+export const dateIsAvailable: DateIsAvailable = ({
+  date,
+  earliestAllowedDate,
+  latestAllowedDate
+}) => {
+  if (earliestAllowedDate && earliestAllowedDate > date) {
+    return false;
+  }
+  if (latestAllowedDate && latestAllowedDate < date) {
+    return false;
+  }
+  return true;
+};
+
 export const createDayData: CreateDayData = ({
   currentDate,
   firstDateInMonth,
   lastDateInMonth,
   selectedDate,
-  today
+  today,
+  earliestAllowedDate,
+  latestAllowedDate
 }) => {
   const currentDateOutsideMonth =
     dateIsBeforeFirstDateInMonth({ currentDate, firstDateInMonth }) ||
@@ -58,7 +75,11 @@ export const createDayData: CreateDayData = ({
   const dayData: DayData = {
     dayOfMonth: currentDate.getDate(),
     isInCurrentMonth: !currentDateOutsideMonth,
-    available: true,
+    available: dateIsAvailable({
+      date: currentDate,
+      earliestAllowedDate,
+      latestAllowedDate
+    }),
     selected: datesAreEqual({ date1: currentDate, date2: selectedDate }),
     today: datesAreEqual({ date1: currentDate, date2: today }),
     date: currentDate
@@ -72,7 +93,9 @@ export const getWeekData: GetWeekData = ({
   firstDateInMonth,
   lastDateInMonth,
   selectedDate,
-  today
+  today,
+  earliestAllowedDate,
+  latestAllowedDate
 }) => {
   const firstDateInWeek = getFirstDateOfWeek({ date });
 
@@ -85,7 +108,9 @@ export const getWeekData: GetWeekData = ({
       firstDateInMonth,
       lastDateInMonth,
       selectedDate,
-      today
+      today,
+      earliestAllowedDate,
+      latestAllowedDate
     });
 
     const day = dayData.date.getDay();
@@ -110,7 +135,12 @@ export const getLastDateInMonth: GetLastDateInMonth = ({ date }) => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 };
 
-export const getMonthData: GetMonthData = ({ date, today }) => {
+export const getMonthData: GetMonthData = ({
+  date,
+  today,
+  earliestAllowedDate,
+  latestAllowedDate
+}) => {
   const firstDateInMonth = getFirstDateInMonth({ date });
   const lastDateInMonth = getLastDateInMonth({ date });
 
@@ -123,7 +153,9 @@ export const getMonthData: GetMonthData = ({ date, today }) => {
       firstDateInMonth,
       lastDateInMonth,
       selectedDate: date,
-      today
+      today,
+      earliestAllowedDate,
+      latestAllowedDate
     });
     weeksInMonth.push(currentWeek);
 
