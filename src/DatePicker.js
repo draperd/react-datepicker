@@ -1,6 +1,11 @@
 // @flow
 
 import React, { useReducer } from "react";
+import Button, { ButtonGroup } from "@atlaskit/button";
+import EditorEditIcon from "@atlaskit/icon/glyph/editor/edit";
+import EditorDoneIcon from "@atlaskit/icon/glyph/editor/done";
+import EditorCloseIcon from "@atlaskit/icon/glyph/editor/close";
+import EditorRemoveIcon from "@atlaskit/icon/glyph/editor/remove";
 import Calendar from "./Calendar";
 import NumberField from "./NumberField";
 import {
@@ -53,18 +58,19 @@ export default function DatePicker(props: DatePickerProps) {
       <div className="main">
         <div className="display">
           <span>{displayValue}</span>
-          <button
-            type="button"
-            onClick={evt => dispatch(createShowPickerAction())}
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            onClick={evt => dispatch(createClearDateAction())}
-          >
-            Clear
-          </button>
+          <ButtonGroup>
+            <Button
+              iconBefore={<EditorEditIcon size="small" />}
+              isDisabled={!state.isValid}
+              onClick={evt => dispatch(createShowPickerAction())}
+              spacing="compact"
+            />
+            <Button
+              iconBefore={<EditorRemoveIcon size="small" />}
+              onClick={evt => dispatch(createClearDateAction())}
+              spacing="compact"
+            />
+          </ButtonGroup>
         </div>
         <div
           className={`picker ${state.pickerIsVisible ? "visible" : "hidden"}`}
@@ -88,21 +94,21 @@ export default function DatePicker(props: DatePickerProps) {
               onChangeCreateAction={createOnYearChangedAction}
               valueAttributeInState="yearInputFieldValue"
             />
-            <button
-              type="button"
-              disabled={!state.isValid}
-              onClick={evt =>
-                dispatch(createSelectDateAction({ date: state.proposedDate }))
-              }
-            >
-              Set
-            </button>
-            <button
-              type="button"
-              onClick={evt => dispatch(createHidePickerAction())}
-            >
-              Cancel
-            </button>
+            <ButtonGroup>
+              <Button
+                iconBefore={<EditorDoneIcon size="small" />}
+                isDisabled={!state.isValid}
+                onClick={evt =>
+                  dispatch(createSelectDateAction({ date: state.proposedDate }))
+                }
+                spacing="compact"
+              />
+              <Button
+                iconBefore={<EditorCloseIcon size="small" />}
+                onClick={evt => dispatch(createHidePickerAction())}
+                spacing="compact"
+              />
+            </ButtonGroup>
           </div>
           {state.warning && (
             <div className="warnings">
