@@ -208,6 +208,25 @@ const reduceOnYearChanged: ReduceOnYearChanged = ({ state, action }) => {
 };
 
 const reduceHidePicker: ReduceHidePicker = ({ state, action }) => {
+  const { isValid, proposedDate, selectedDate } = state;
+
+  if (!isValid) {
+    // If the picker isn't in a valid date when it's closed we need to ensure that
+    // it's reset. The proposed date should still be a valid date because it only gets
+    // updated when valid input is provided. It's important to reset validity and
+    // clear warnings and get back to a healthy state
+    return {
+      ...state,
+      proposedDate,
+      isValid: true,
+      warning: "",
+      pickerIsVisible: false,
+      dayInputFieldValue: proposedDate.getDate(),
+      monthInputFieldValue: proposedDate.getMonth() + 1,
+      yearInputFieldValue: proposedDate.getFullYear()
+    };
+  }
+
   return {
     ...state,
     pickerIsVisible: false

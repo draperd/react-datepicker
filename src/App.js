@@ -17,9 +17,9 @@ function App() {
   const [date, setDate] = useState(initialDate);
   return (
     <div className="app">
-      <button type="button" onClick={() => setDate(inAWeek)}>
+      {/* <button type="button" onClick={() => setDate(inAWeek)}>
         Set to a week from now
-      </button>
+      </button> */}
 
       <DatePicker
         value={date}
