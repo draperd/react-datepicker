@@ -99,6 +99,7 @@ export default function DatePicker(props: DatePickerProps) {
             <ButtonGroup>
               <Button
                 iconBefore={<EditorDoneIcon size="small" />}
+                appearance="subtle"
                 isDisabled={!state.isValid}
                 onClick={evt =>
                   dispatch(createSelectDateAction({ date: state.proposedDate }))
@@ -107,6 +108,7 @@ export default function DatePicker(props: DatePickerProps) {
               />
               <Button
                 iconBefore={<EditorCloseIcon size="small" />}
+                appearance="subtle"
                 onClick={evt => dispatch(createHidePickerAction())}
                 spacing="compact"
               />

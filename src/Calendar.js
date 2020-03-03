@@ -75,6 +75,7 @@ export default function Calendar(props: CalendarProps) {
             <div className="monthDisplay">
               <Button
                 iconBefore={<ChevronLeftIcon size="small" />}
+                appearance="subtle"
                 onClick={evt =>
                   dispatch(createOnMonthChangedAction({ value: previousMonth }))
                 }
@@ -85,6 +86,7 @@ export default function Calendar(props: CalendarProps) {
 
               <Button
                 iconBefore={<ChevronRightIcon size="small" />}
+                appearance="subtle"
                 onClick={evt =>
                   dispatch(createOnMonthChangedAction({ value: nextMonth }))
                 }
