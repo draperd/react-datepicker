@@ -135,7 +135,9 @@ export default function DatePicker(props: DatePickerProps) {
         )}
         trigger={triggerProps => (
           <div className="display" {...triggerProps}>
-            <span>{displayValue}</span>
+            <span onClick={evt => dispatch(createShowPickerAction())}>
+              {displayValue}
+            </span>
             <ButtonGroup>
               <Button
                 iconBefore={<EditorEditIcon size="small" />}

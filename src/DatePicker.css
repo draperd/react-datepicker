@@ -24,6 +24,10 @@ div.picker {
   padding: 3px;
 }
 
+.display > span {
+  cursor: pointer;
+}
+
 .warnings {
   color: #de350b;
   font-weight: bold;
@@ -35,13 +39,6 @@ div.picker {
   align-items: flex-end;
   margin-bottom: 15px;
 }
-/* 
-.picker.visible {
-  display: block;
-}
-.picker.hidden {
-  display: none;
-} */
 
 #day,
 #month {
