@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useReducer, useEffect, useRef } from "react";
+import Popup from "@atlaskit/popup";
 import Button, { ButtonGroup } from "@atlaskit/button";
 import EditorEditIcon from "@atlaskit/icon/glyph/editor/edit";
 import EditorDoneIcon from "@atlaskit/icon/glyph/editor/done";
@@ -73,75 +74,84 @@ export default function DatePicker(props: DatePickerProps) {
     : "";
   return (
     <DatePickerContext.Provider value={context}>
-      <div className="main">
-        <div className="display">
-          <span>{displayValue}</span>
-          <ButtonGroup>
-            <Button
-              iconBefore={<EditorEditIcon size="small" />}
-              isDisabled={!state.isValid}
-              onClick={evt => dispatch(createShowPickerAction())}
-              spacing="compact"
-            />
-            <Button
-              iconBefore={<EditorRemoveIcon size="small" />}
-              onClick={evt => dispatch(createClearDateAction())}
-              spacing="compact"
-            />
-          </ButtonGroup>
-        </div>
-        <div
-          className={`picker ${state.pickerIsVisible ? "visible" : "hidden"}`}
-        >
-          <div className="input-row">
-            <NumberField
-              label="Day"
-              name="day"
-              onChangeCreateAction={createOnDayChangedAction}
-              valueAttributeInState="dayInputFieldValue"
-            />
-            <NumberField
-              label="Month"
-              name="month"
-              onChangeCreateAction={createOnMonthChangedAction}
-              valueAttributeInState="monthInputFieldValue"
-            />
-            <NumberField
-              label="Year"
-              name="year"
-              onChangeCreateAction={createOnYearChangedAction}
-              valueAttributeInState="yearInputFieldValue"
-            />
+      <Popup
+        isOpen={state.pickerIsVisible}
+        onClose={() => dispatch(createHidePickerAction())}
+        placement="bottom-start"
+        content={() => (
+          <div className="main">
+            <div className="picker">
+              <div className="input-row">
+                <NumberField
+                  label="Day"
+                  name="day"
+                  onChangeCreateAction={createOnDayChangedAction}
+                  valueAttributeInState="dayInputFieldValue"
+                />
+                <NumberField
+                  label="Month"
+                  name="month"
+                  onChangeCreateAction={createOnMonthChangedAction}
+                  valueAttributeInState="monthInputFieldValue"
+                />
+                <NumberField
+                  label="Year"
+                  name="year"
+                  onChangeCreateAction={createOnYearChangedAction}
+                  valueAttributeInState="yearInputFieldValue"
+                />
+                <ButtonGroup>
+                  <Button
+                    iconBefore={<EditorDoneIcon size="small" />}
+                    appearance="subtle"
+                    isDisabled={!state.isValid}
+                    onClick={evt =>
+                      dispatch(
+                        createSelectDateAction({ date: state.proposedDate })
+                      )
+                    }
+                    spacing="compact"
+                  />
+                  <Button
+                    iconBefore={<EditorCloseIcon size="small" />}
+                    appearance="subtle"
+                    onClick={evt => dispatch(createHidePickerAction())}
+                    spacing="compact"
+                  />
+                </ButtonGroup>
+              </div>
+              <Calendar
+                date={state.proposedDate}
+                earliestAllowedDate={state.earliestAllowedDate}
+                latestAllowedDate={state.latestAllowedDate}
+              />
+              {state.warning && (
+                <div className="warnings">
+                  <span>{state.warning}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        trigger={triggerProps => (
+          <div className="display" {...triggerProps}>
+            <span>{displayValue}</span>
             <ButtonGroup>
               <Button
-                iconBefore={<EditorDoneIcon size="small" />}
-                appearance="subtle"
+                iconBefore={<EditorEditIcon size="small" />}
                 isDisabled={!state.isValid}
-                onClick={evt =>
-                  dispatch(createSelectDateAction({ date: state.proposedDate }))
-                }
+                onClick={evt => dispatch(createShowPickerAction())}
                 spacing="compact"
               />
               <Button
-                iconBefore={<EditorCloseIcon size="small" />}
-                appearance="subtle"
-                onClick={evt => dispatch(createHidePickerAction())}
+                iconBefore={<EditorRemoveIcon size="small" />}
+                onClick={evt => dispatch(createClearDateAction())}
                 spacing="compact"
               />
             </ButtonGroup>
           </div>
-          <Calendar
-            date={state.proposedDate}
-            earliestAllowedDate={state.earliestAllowedDate}
-            latestAllowedDate={state.latestAllowedDate}
-          />
-          {state.warning && (
-            <div className="warnings">
-              <span>{state.warning}</span>
-            </div>
-          )}
-        </div>
-      </div>
+        )}
+      />
     </DatePickerContext.Provider>
   );
 }

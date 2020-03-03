@@ -16,7 +16,7 @@ const onChange = date => console.log("Date changed to", date);
 function App() {
   const [date, setDate] = useState(initialDate);
   return (
-    <div>
+    <div className="app">
       <button type="button" onClick={() => setDate(inAWeek)}>
         Set to a week from now
       </button>
