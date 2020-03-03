@@ -74,6 +74,8 @@ export type GetMonthData = ({
   latestAllowedDate?: Date
 }) => WeekData[];
 
+export type OnChange = (value?: Date) => void;
+
 export type State = {
   earliestAllowedDate?: Date,
   latestAllowedDate?: Date,
@@ -84,13 +86,16 @@ export type State = {
   dayInputFieldValue: number | "",
   monthInputFieldValue: number | "",
   yearInputFieldValue: number | "",
-  warning?: string
+  warning?: string,
+  onChange?: OnChange
 };
+
 export type DatePickerProps = {
   value?: Date,
   isDisabled?: boolean, // TODO: This needs handling
   earliestAllowedDate?: Date,
-  latestAllowedDate?: Date
+  latestAllowedDate?: Date,
+  onChange?: OnChange
 };
 export type CalendarProps = {
   date: Date,

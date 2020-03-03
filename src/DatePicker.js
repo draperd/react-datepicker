@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect, useRef } from "react";
 import Button, { ButtonGroup } from "@atlaskit/button";
 import EditorEditIcon from "@atlaskit/icon/glyph/editor/edit";
 import EditorDoneIcon from "@atlaskit/icon/glyph/editor/done";
@@ -30,7 +30,7 @@ export const createContext: CreateContext = ({ state, dispatch }) => ({
 });
 
 export default function DatePicker(props: DatePickerProps) {
-  const { value, earliestAllowedDate, latestAllowedDate } = props;
+  const { value, earliestAllowedDate, latestAllowedDate, onChange } = props;
 
   const proposedDate = value || new Date(); // Default to today when there is no value provided
 
@@ -47,10 +47,26 @@ export default function DatePicker(props: DatePickerProps) {
     monthInputFieldValue,
     yearInputFieldValue,
     earliestAllowedDate,
-    latestAllowedDate
+    latestAllowedDate,
+    onChange
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   const context = createContext({ state, dispatch });
+
+  // This is an attempt to track changing in prop value, to update the selected date...
+  // However, this updates on each render and we need to be able to process more than once
+  const prevValueRef = useRef();
+  useEffect(() => {
+    if (prevValueRef.current !== value) {
+      if (value) {
+        dispatch(createSelectDateAction({ date: value }));
+      } else {
+        dispatch(createClearDateAction());
+      }
+    }
+    // TODO: Can only set a value via props once, because the prop isn't changing
+    prevValueRef.current = value;
+  });
 
   const displayValue = state.selectedDate
     ? state.selectedDate.toDateString()

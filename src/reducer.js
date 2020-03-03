@@ -207,10 +207,29 @@ const reduceSelectDate: ReduceSelectDate = ({ state, action }) => {
   let {
     payload: { date }
   } = action;
+  const { earliestAllowedDate, latestAllowedDate } = state;
+
+  // Don't allow dates to be set if they are unavailable!
+  if (
+    !dateIsAvailable({
+      date,
+      earliestAllowedDate,
+      latestAllowedDate
+    })
+  ) {
+    return state;
+  }
+
+  const { onChange } = state;
+  if (onChange && typeof onChange === "function") {
+    onChange(date);
+  }
 
   return {
     ...state,
     pickerIsVisible: false,
+    warning: "",
+    isValid: true,
     selectedDate: date,
     proposedDate: date,
     dayInputFieldValue: date.getDate(),
