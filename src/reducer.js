@@ -118,19 +118,23 @@ export const getNewProposedDateForYearChange: GetNewProposedDate = ({
 const reduceDatePartChanged: ReduceDatePartChanged = ({
   state,
   action,
-  getNewProposedDate
+  getNewProposedDate,
+  inputFieldStateValue
 }) => {
   const { proposedDate, earliestAllowedDate, latestAllowedDate } = state;
   let {
     payload: { value }
   } = action;
 
+  // TODO: Ideally need to do a better job handling strange characters:
+  //       - ignore zeros
+  //       - could we always have 2 character day and month? (with leading zeroes)
   if (value === "") {
     return {
       ...state,
       isValid: false,
       warning: "You need to provide a full date",
-      dayInputFieldValue: value
+      [inputFieldStateValue]: value
     };
   }
 
@@ -169,7 +173,8 @@ const reduceOnDayChanged: ReduceOnDayChanged = ({ state, action }) => {
   return reduceDatePartChanged({
     state,
     action,
-    getNewProposedDate: getNewProposedDateForDayChange
+    getNewProposedDate: getNewProposedDateForDayChange,
+    inputFieldStateValue: "dayInputFieldValue"
   });
 };
 
@@ -177,15 +182,28 @@ const reduceOnMonthChanged: ReduceOnMonthChanged = ({ state, action }) => {
   return reduceDatePartChanged({
     state,
     action,
-    getNewProposedDate: getNewProposedDateForMonthChange
+    getNewProposedDate: getNewProposedDateForMonthChange,
+    inputFieldStateValue: "monthInputFieldValue"
   });
 };
 
 const reduceOnYearChanged: ReduceOnYearChanged = ({ state, action }) => {
+  let {
+    payload: { value }
+  } = action;
+  if (value === "" || value < 1000) {
+    return {
+      ...state,
+      isValid: false,
+      warning: "You need to provide a full date",
+      yearInputFieldValue: value
+    };
+  }
   return reduceDatePartChanged({
     state,
     action,
-    getNewProposedDate: getNewProposedDateForYearChange
+    getNewProposedDate: getNewProposedDateForYearChange,
+    inputFieldStateValue: "yearInputFieldValue"
   });
 };
 

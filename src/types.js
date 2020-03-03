@@ -192,7 +192,8 @@ export type GetNewProposedDate = ({
 export type ReduceDatePartChanged = ({
   state: State,
   action: OnDayChangedAction | OnMonthChangedAction | OnYearChangedAction,
-  getNewProposedDate: GetNewProposedDate
+  getNewProposedDate: GetNewProposedDate,
+  inputFieldStateValue: InputFieldStateValue
 }) => State;
 
 export type ReduceOnDayChanged = ({
