@@ -7,6 +7,7 @@ export const ON_MONTH_CHANGED_ACTION = "onMonthChanged";
 export const ON_YEAR_CHANGED_ACTION = "onYearChanged";
 export const SELECT_DATE_ACTION = "selectDate";
 export const CLEAR_DATE_ACTION = "clearDate";
+export const SET_CONSTRAINTS_ACTION = "setConstraints";
 
 export type DatesAreEqual = ({ date1: Date, date2: Date }) => boolean;
 export type DateIsBeforeFirstDateInMonth = ({
@@ -136,6 +137,14 @@ export type SelectDateAction = {
   }
 };
 
+export type SetConstraintsAction = {
+  type: typeof SET_CONSTRAINTS_ACTION,
+  payload: {
+    earliestAllowedDate?: Date,
+    latestAllowedDate?: Date
+  }
+};
+
 export type ClearDateAction = {
   type: typeof CLEAR_DATE_ACTION
 };
@@ -153,6 +162,10 @@ export type CreateOnYearChangedAction = ({
 }) => OnYearChangedAction;
 export type CreateSelectDateAction = ({ date: Date }) => SelectDateAction;
 export type CreateClearDateAction = () => ClearDateAction;
+export type CreateSetConstraintsAction = ({
+  earliestAllowedDate?: Date,
+  latestAllowedDate?: Date
+}) => SetConstraintsAction;
 
 export type OnChangeCreateAction =
   | CreateOnDayChangedAction
@@ -170,7 +183,8 @@ export type Action =
   | OnMonthChangedAction
   | OnYearChangedAction
   | SelectDateAction
-  | ClearDateAction;
+  | ClearDateAction
+  | SetConstraintsAction;
 
 export type DispatchAction = Action => void;
 
@@ -226,4 +240,12 @@ export type ReduceSelectDate = ({
   action: SelectDateAction
 }) => State;
 
-export type ReduceClearDate = ({ state: State, action: Action }) => State;
+export type ReduceClearDate = ({
+  state: State,
+  action: ClearDateAction
+}) => State;
+
+export type ReduceSetConstraints = ({
+  state: State,
+  action: SetConstraintsAction
+}) => State;

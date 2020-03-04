@@ -2,7 +2,7 @@
 
 import React from "react";
 import { DatePickerContext } from "./DatePicker";
-import { createSelectDateAction } from "./reducer";
+import { createSelectDateAction } from "./actions";
 import type { DayData } from "./types";
 import "./Day.css";
 

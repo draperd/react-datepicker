@@ -2,13 +2,6 @@
 import { dateIsAvailable } from "./utils";
 import type {
   Action,
-  CreateClearDateAction,
-  CreateHidePickerAction,
-  CreateShowPickerAction,
-  CreateOnDayChangedAction,
-  CreateOnMonthChangedAction,
-  CreateOnYearChangedAction,
-  CreateSelectDateAction,
   GetNewProposedDate,
   ReduceHidePicker,
   ReduceShowPicker,
@@ -18,6 +11,7 @@ import type {
   ReduceOnYearChanged,
   ReduceSelectDate,
   ReduceClearDate,
+  ReduceSetConstraints,
   State
 } from "./types";
 import {
@@ -27,68 +21,9 @@ import {
   ON_DAY_CHANGED_ACTION,
   ON_MONTH_CHANGED_ACTION,
   ON_YEAR_CHANGED_ACTION,
-  SELECT_DATE_ACTION
+  SELECT_DATE_ACTION,
+  SET_CONSTRAINTS_ACTION
 } from "./types";
-
-export const createHidePickerAction: CreateHidePickerAction = () => {
-  return {
-    type: HIDE_PICKER_ACTION
-  };
-};
-
-export const createShowPickerAction: CreateShowPickerAction = () => {
-  return {
-    type: SHOW_PICKER_ACTION
-  };
-};
-
-export const createOnDayChangedAction: CreateOnDayChangedAction = ({
-  value
-}) => {
-  return {
-    type: ON_DAY_CHANGED_ACTION,
-    payload: {
-      value
-    }
-  };
-};
-
-export const createOnMonthChangedAction: CreateOnMonthChangedAction = ({
-  value
-}) => {
-  return {
-    type: ON_MONTH_CHANGED_ACTION,
-    payload: {
-      value
-    }
-  };
-};
-
-export const createOnYearChangedAction: CreateOnYearChangedAction = ({
-  value
-}) => {
-  return {
-    type: ON_YEAR_CHANGED_ACTION,
-    payload: {
-      value
-    }
-  };
-};
-
-export const createSelectDateAction: CreateSelectDateAction = ({ date }) => {
-  return {
-    type: SELECT_DATE_ACTION,
-    payload: {
-      date
-    }
-  };
-};
-
-export const createClearDateAction: CreateClearDateAction = () => {
-  return {
-    type: CLEAR_DATE_ACTION
-  };
-};
 
 export const getNewProposedDateForDayChange: GetNewProposedDate = ({
   proposedDate,
@@ -208,7 +143,7 @@ const reduceOnYearChanged: ReduceOnYearChanged = ({ state, action }) => {
 };
 
 const reduceHidePicker: ReduceHidePicker = ({ state, action }) => {
-  const { isValid, proposedDate, selectedDate } = state;
+  const { isValid, proposedDate } = state;
 
   if (!isValid) {
     // If the picker isn't in a valid date when it's closed we need to ensure that
@@ -276,6 +211,12 @@ const reduceSelectDate: ReduceSelectDate = ({ state, action }) => {
 };
 
 const reduceClearDate: ReduceClearDate = ({ state, action }) => {
+  // It is important to call the onChange callback on clearing as well as setting...
+  const { onChange } = state;
+  if (onChange && typeof onChange === "function") {
+    onChange(undefined);
+  }
+
   const date = new Date();
   return {
     ...state,
@@ -285,6 +226,22 @@ const reduceClearDate: ReduceClearDate = ({ state, action }) => {
     dayInputFieldValue: date.getDate(),
     monthInputFieldValue: date.getMonth() + 1,
     yearInputFieldValue: date.getFullYear()
+  };
+};
+
+export const reduceSetConstraints: ReduceSetConstraints = ({
+  state,
+  action
+}) => {
+  // TODO: There is a potential issue here if the constraint makes the selected date invalid !
+  //       - One option would be to just bring the date within the constraint
+  const {
+    payload: { earliestAllowedDate, latestAllowedDate }
+  } = action;
+  return {
+    ...state,
+    earliestAllowedDate,
+    latestAllowedDate
   };
 };
 
@@ -310,6 +267,9 @@ export function reducer(state: State, action: Action) {
     }
     case CLEAR_DATE_ACTION: {
       return reduceClearDate({ state, action });
+    }
+    case SET_CONSTRAINTS_ACTION: {
+      return reduceSetConstraints({ state, action });
     }
     default:
       return state;

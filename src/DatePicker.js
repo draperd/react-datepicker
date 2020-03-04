@@ -9,16 +9,17 @@ import EditorCloseIcon from "@atlaskit/icon/glyph/editor/close";
 import EditorRemoveIcon from "@atlaskit/icon/glyph/editor/remove";
 import Calendar from "./Calendar";
 import NumberField from "./NumberField";
+import { reducer } from "./reducer";
 import {
+  createClearDateAction,
   createShowPickerAction,
   createHidePickerAction,
   createOnDayChangedAction,
   createOnMonthChangedAction,
   createOnYearChangedAction,
-  createClearDateAction,
-  reducer,
-  createSelectDateAction
-} from "./reducer";
+  createSelectDateAction,
+  createSetConstraintsAction
+} from "./actions";
 import type { CreateContext, DatePickerProps, State } from "./types";
 import "./DatePicker.css";
 
@@ -56,17 +57,36 @@ export default function DatePicker(props: DatePickerProps) {
 
   // This is an attempt to track changing in prop value, to update the selected date...
   // However, this updates on each render and we need to be able to process more than once
-  const prevValueRef = useRef();
+  const ref = useRef();
   useEffect(() => {
-    if (prevValueRef.current !== value) {
-      if (value) {
-        dispatch(createSelectDateAction({ date: value }));
-      } else {
-        dispatch(createClearDateAction());
+    const previousProps = ref.current;
+    if (previousProps) {
+      if (previousProps.value !== value) {
+        if (value) {
+          dispatch(createSelectDateAction({ date: value }));
+        } else {
+          dispatch(createClearDateAction());
+        }
+      }
+
+      const {
+        earliestAllowedDate: previousEarliestAllowedDate,
+        latestAllowedDate: previousLatestAllowedDate
+      } = previousProps;
+      if (
+        previousEarliestAllowedDate !== earliestAllowedDate ||
+        previousLatestAllowedDate !== latestAllowedDate
+      ) {
+        dispatch(
+          createSetConstraintsAction({
+            earliestAllowedDate,
+            latestAllowedDate
+          })
+        );
       }
     }
     // TODO: Can only set a value via props once, because the prop isn't changing
-    prevValueRef.current = value;
+    ref.current = props;
   });
 
   const displayValue = state.selectedDate

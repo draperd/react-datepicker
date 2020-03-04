@@ -6,7 +6,7 @@ import ChevronRightIcon from "@atlaskit/icon/glyph/chevron-right";
 import ChevronLeftIcon from "@atlaskit/icon/glyph/chevron-left";
 import { DatePickerContext } from "./DatePicker";
 import Day from "./Day";
-import { createOnMonthChangedAction } from "./reducer";
+import { createOnMonthChangedAction } from "./actions";
 import { getMonthData } from "./utils";
 import type { CalendarProps, WeekData } from "./types";
 import "./Calendar.css";
