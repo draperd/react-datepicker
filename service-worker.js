@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/react-datepicker/precache-manifest.38ea8798e65509e7ba82a4af1a3ac377.js"
+  "/react-datepicker/precache-manifest.565d3ea5fcefcb84cdd8bc64458b3497.js"
 );
 
 self.addEventListener('message', (event) => {
