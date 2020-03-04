@@ -11,7 +11,6 @@ latestAllowedDate.setDate(initialDate.getDate() + 45);
 
 const inAWeek = new Date();
 inAWeek.setDate(initialDate.getDate() + 7);
-const onChange = date => console.log("Date changed to", date);
 
 function App() {
   const [date, setDate] = useState(initialDate);
@@ -39,16 +38,18 @@ function App() {
         <h4>Today with constraints</h4>
         <p>
           This is an example picker that is set to today and contrained to
-          within 45 days before and after today.
+          within 45 days before and after today. Use the button to set the date
+          by passing a new prop to the picker.
         </p>
         <button type="button" onClick={() => setDate(inAWeek)}>
-          Set to a week from now
+          Set the date to a week from now
         </button>
+        <p></p>
         <DatePicker
           value={date}
           earliestAllowedDate={earliestAllowedDate}
           latestAllowedDate={latestAllowedDate}
-          onChange={onChange}
+          onChange={date => setDate(date)}
         />
       </section>
 
@@ -56,8 +57,8 @@ function App() {
         <h4>Setting a date range</h4>
         <p>
           This example shows two date pickers used together to allow a date
-          range to be set. Each has the ability to set a constraint on the
-          other.
+          range to be set. When you set a date in the "From" date picker it will
+          set a latest date constraint on the "To" picker (and vice versa).
         </p>
         <div className="range">
           <label htmlFor="from">From</label>
