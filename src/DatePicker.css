@@ -26,6 +26,10 @@ div.picker {
 
 .display > span {
   cursor: pointer;
+  display: inline-block;
+  flex-grow: 1;
+  height: 25px;
+  line-height: 25px;
 }
 
 .warnings {
