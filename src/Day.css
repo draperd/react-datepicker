@@ -68,14 +68,25 @@ table > tbody > tr > td > div:hover {
 }
 
 table > tbody > tr > td > div.unavailable,
+table
+  > tbody
+  > tr
+  > td
+  > div.unavailable.selected
+  table
+  > tbody
+  > tr
+  > td
+  > div.unavailable.selected:hover,
 table > tbody > tr > td > div.unavailable:hover {
-  background-color: #c1c7d0;
+  background-color: transparent;
+  color: #6b778c;
   border: 2px solid #ffffff;
   border-radius: 3px;
-  color: #ffffff;
   cursor: not-allowed;
   font-size: 14px;
   padding: 4px 9px;
   position: relative;
   text-align: center;
+  opacity: 0.3;
 }
