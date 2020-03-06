@@ -4,9 +4,14 @@ import React from "react";
 import Button from "@atlaskit/button";
 import ChevronRightIcon from "@atlaskit/icon/glyph/chevron-right";
 import ChevronLeftIcon from "@atlaskit/icon/glyph/chevron-left";
+import ChevronRightLargeIcon from "@atlaskit/icon/glyph/chevron-right-large";
+import ChevronLeftLargeIcon from "@atlaskit/icon/glyph/chevron-left-large";
 import { DatePickerContext } from "./DatePicker";
 import Day from "./Day";
-import { createOnMonthChangedAction } from "./actions";
+import {
+  createOnMonthChangedAction,
+  createOnYearChangedAction
+} from "./actions";
 import { getMonthData } from "./utils";
 import type { CalendarProps, WeekData } from "./types";
 import "./Calendar.css";
@@ -66,6 +71,8 @@ export default function Calendar(props: CalendarProps) {
   // NOTE: Months are zero-indexed, but the month field is not hence adding 2 and not substracting anything!
   const nextMonth = date.getMonth() + 2;
   const previousMonth = date.getMonth();
+  const nextYear = date.getFullYear() + 1;
+  const previousYear = date.getFullYear() - 1;
   return (
     <DatePickerContext.Consumer>
       {context => {
@@ -73,6 +80,13 @@ export default function Calendar(props: CalendarProps) {
         return (
           <div className="calendar">
             <div className="monthDisplay">
+              <Button
+                iconBefore={<ChevronLeftLargeIcon size="small" />}
+                appearance="subtle"
+                onClick={evt =>
+                  dispatch(createOnYearChangedAction({ value: previousYear }))
+                }
+              />
               <Button
                 iconBefore={<ChevronLeftIcon size="small" />}
                 appearance="subtle"
@@ -89,6 +103,13 @@ export default function Calendar(props: CalendarProps) {
                 appearance="subtle"
                 onClick={evt =>
                   dispatch(createOnMonthChangedAction({ value: nextMonth }))
+                }
+              />
+              <Button
+                iconBefore={<ChevronRightLargeIcon size="small" />}
+                appearance="subtle"
+                onClick={evt =>
+                  dispatch(createOnYearChangedAction({ value: nextYear }))
                 }
               />
             </div>
