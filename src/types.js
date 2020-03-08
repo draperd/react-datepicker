@@ -92,11 +92,13 @@ export type State = {
 };
 
 export type DatePickerProps = {
+  id?: string,
   value?: Date,
   isDisabled?: boolean, // TODO: This needs handling
   earliestAllowedDate?: Date,
   latestAllowedDate?: Date,
-  onChange?: OnChange
+  onChange?: OnChange,
+  label?: string
 };
 export type CalendarProps = {
   date: Date,

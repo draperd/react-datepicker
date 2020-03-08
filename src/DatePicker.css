@@ -4,6 +4,12 @@
     "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
+.main > h2 {
+  visibility: hidden;
+  height: 0;
+  font-size: 0;
+}
+
 div.picker {
   margin-top: 10px;
   width: 285px;

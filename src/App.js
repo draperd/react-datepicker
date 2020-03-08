@@ -31,7 +31,8 @@ function App() {
         <p>
           This is an example picker with no initial value and no constraints
         </p>
-        <DatePicker />
+        <label htmlFor="example1">Example date 1</label>
+        <DatePicker id="example1" label="Example date 1" />
       </section>
 
       <section>
@@ -45,7 +46,10 @@ function App() {
           Set the date to a week from now
         </button>
         <p></p>
+        <label htmlFor="example2">Example date 2</label>
         <DatePicker
+          id="example2"
+          label="Example date two"
           value={date}
           earliestAllowedDate={earliestAllowedDate}
           latestAllowedDate={latestAllowedDate}

@@ -21,6 +21,7 @@ export default function NumberField(props: NumberFieldProps) {
           <div className="number">
             <label htmlFor={name}>{label}</label>
             <Textfield
+              aria-label={label}
               name={name}
               type="number"
               value={state[valueAttributeInState]}

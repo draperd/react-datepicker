@@ -78,7 +78,7 @@ export default function Calendar(props: CalendarProps) {
       {context => {
         const { dispatch } = context;
         return (
-          <div className="calendar">
+          <div className="calendar" aria-hidden="true">
             <div className="monthDisplay">
               <Button
                 iconBefore={<ChevronLeftLargeIcon size="small" />}

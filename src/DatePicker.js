@@ -32,7 +32,14 @@ export const createContext: CreateContext = ({ state, dispatch }) => ({
 });
 
 export default function DatePicker(props: DatePickerProps) {
-  const { value, earliestAllowedDate, latestAllowedDate, onChange } = props;
+  const {
+    id,
+    value,
+    earliestAllowedDate,
+    latestAllowedDate,
+    onChange,
+    label = "date picker"
+  } = props;
 
   const proposedDate = value || new Date(); // Default to today when there is no value provided
 
@@ -92,6 +99,36 @@ export default function DatePicker(props: DatePickerProps) {
   const displayValue = state.selectedDate
     ? state.selectedDate.toDateString()
     : "";
+
+  const locale = undefined;
+  const ariaDateOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+  const ariaDate = state.selectedDate
+    ? state.selectedDate.toLocaleDateString(locale, ariaDateOptions)
+    : "";
+
+  console.log("Aria date", ariaDate);
+
+  const ariaLabel =
+    label + (ariaDate === "" ? " with no date" : ` with date ${ariaDate}`);
+
+  const editButtonLabel = `Edit date of ${label}`;
+  const clearButtonLabel = `Clear date for ${label}`;
+
+  const ariaProposedDate = state.proposedDate
+    ? state.proposedDate.toLocaleDateString(locale, ariaDateOptions)
+    : "";
+
+  const saveDateButtonLabel = ariaProposedDate
+    ? `Save the date ${ariaProposedDate} for ${label}`
+    : "Cannot save date";
+  const cancelButtonLabel = `Abandon editing date for ${label}`;
+
+  const dialogTitle = `${id || ""}-dialog-title`;
+
   return (
     <DatePickerContext.Provider value={context}>
       <Popup
@@ -99,7 +136,8 @@ export default function DatePicker(props: DatePickerProps) {
         onClose={() => dispatch(createHidePickerAction())}
         placement="bottom-start"
         content={() => (
-          <div className="main">
+          <div role="dialog" className="main" aria-labelledby={dialogTitle}>
+            <h2 id={dialogTitle}>Select a date for {label}</h2>
             <div className="picker">
               <div className="input-row">
                 <NumberField
@@ -122,7 +160,12 @@ export default function DatePicker(props: DatePickerProps) {
                 />
                 <ButtonGroup>
                   <Button
-                    iconBefore={<EditorDoneIcon size="small" />}
+                    iconBefore={
+                      <EditorDoneIcon
+                        size="small"
+                        label={saveDateButtonLabel}
+                      />
+                    }
                     appearance="subtle"
                     isDisabled={!state.isValid}
                     onClick={evt =>
@@ -131,9 +174,11 @@ export default function DatePicker(props: DatePickerProps) {
                       )
                     }
                     spacing="compact"
-                  />
+                  ></Button>
                   <Button
-                    iconBefore={<EditorCloseIcon size="small" />}
+                    iconBefore={
+                      <EditorCloseIcon size="small" label={cancelButtonLabel} />
+                    }
                     appearance="subtle"
                     onClick={evt => dispatch(createHidePickerAction())}
                     spacing="compact"
@@ -154,19 +199,27 @@ export default function DatePicker(props: DatePickerProps) {
           </div>
         )}
         trigger={triggerProps => (
-          <div className="display" {...triggerProps}>
-            <span onClick={evt => dispatch(createShowPickerAction())}>
+          <div id={id} className="display" {...triggerProps}>
+            <span
+              onClick={evt => dispatch(createShowPickerAction())}
+              tabIndex="0"
+              aria-label={ariaLabel}
+            >
               {displayValue}
             </span>
             <ButtonGroup>
               <Button
-                iconBefore={<EditorEditIcon size="small" />}
+                iconBefore={
+                  <EditorEditIcon size="small" label={editButtonLabel} />
+                }
                 isDisabled={!state.isValid}
                 onClick={evt => dispatch(createShowPickerAction())}
                 spacing="compact"
               />
               <Button
-                iconBefore={<EditorRemoveIcon size="small" />}
+                iconBefore={
+                  <EditorRemoveIcon size="small" label={clearButtonLabel} />
+                }
                 onClick={evt => dispatch(createClearDateAction())}
                 spacing="compact"
               />
