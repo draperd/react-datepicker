@@ -69,7 +69,6 @@ export const onCalendarKeyUpEvent: OnCalendarKeyUpEvent = ({
   switch (keyCode) {
     case 13: {
       dispatch(createSelectDateAction({ date }));
-
       break;
     }
     case 37: {
@@ -132,6 +131,17 @@ export default function Calendar(props: CalendarProps) {
   const nextMonthLabel = `Next month`;
   const nextYearLabel = `Next year`;
 
+  // TODO: These consts are duplicated from DatePicker, need refactoring to not copy
+  const locale = undefined;
+  const ariaDateOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+  const ariaDate = date.toLocaleString(locale, ariaDateOptions);
+
+  const calendarLabel = `Date is ${ariaDate}. Use cursor keys to choose a new date or enter to set it`;
+
   return (
     <DatePickerContext.Consumer>
       {context => {
@@ -184,11 +194,11 @@ export default function Calendar(props: CalendarProps) {
               />
             </div>
             <div
+              aria-label={calendarLabel}
+              role="listbox"
               tabIndex="0"
               onKeyUp={event => onCalendarKeyUpEvent({ event, dispatch, date })}
             >
-              {/* TODO: Could we put invisible instructions here for screenreaders on using cursor keys and what the value is?
-                        - set an aria role?*/}
               <table className="week">
                 <CalendarHeader />
                 <tbody>{weeks}</tbody>
