@@ -10,10 +10,12 @@ import { DatePickerContext } from "./DatePicker";
 import Day from "./Day";
 import {
   createOnMonthChangedAction,
-  createOnYearChangedAction
+  createOnYearChangedAction,
+  createOnDayChangedAction,
+  createSelectDateAction
 } from "./actions";
 import { getMonthData } from "./utils";
-import type { CalendarProps, WeekData } from "./types";
+import type { CalendarProps, WeekData, DispatchAction } from "./types";
 import "./Calendar.css";
 
 function CalendarHeader() {
@@ -52,6 +54,56 @@ function Week(props: WeekProps) {
   );
 }
 
+export type OnCalendarKeyUpEvent = ({
+  event: SyntheticKeyboardEvent<EventTarget>,
+  dispatch: DispatchAction,
+  date: Date
+}) => void;
+
+export const onCalendarKeyUpEvent: OnCalendarKeyUpEvent = ({
+  event,
+  dispatch,
+  date
+}) => {
+  const keyCode = event.which;
+  switch (keyCode) {
+    case 13: {
+      dispatch(createSelectDateAction({ date }));
+
+      break;
+    }
+    case 37: {
+      const previousDay = date.getDate() - 1;
+      dispatch(createOnDayChangedAction({ value: previousDay }));
+      break;
+    }
+    case 38: {
+      const previousWeek = date.getDate() - 7;
+      dispatch(createOnDayChangedAction({ value: previousWeek }));
+      break;
+    }
+    case 39: {
+      const nextDay = date.getDate() + 1;
+      dispatch(createOnDayChangedAction({ value: nextDay }));
+      break;
+    }
+    case 40: {
+      const nextWeek = date.getDate() + 7;
+      dispatch(createOnDayChangedAction({ value: nextWeek }));
+      break;
+    }
+    default: {
+      // Return for all other cases so as not to call preventDefault and
+      // stopPropogation on the event...
+      return;
+    }
+  }
+
+  // We're going to stop further handling of keyup events if it was a key we've handled
+  event.preventDefault();
+  event.stopPropagation();
+};
+
 export default function Calendar(props: CalendarProps) {
   const { date, earliestAllowedDate, latestAllowedDate } = props;
   const today = new Date();
@@ -73,22 +125,36 @@ export default function Calendar(props: CalendarProps) {
   const previousMonth = date.getMonth();
   const nextYear = date.getFullYear() + 1;
   const previousYear = date.getFullYear() - 1;
+
+  // TODO: Would this be better if the button label said what the previous/next month/year would be on click?
+  const previousYearLabel = `Previous year`;
+  const prevousMonthLabel = `Previous month`;
+  const nextMonthLabel = `Next month`;
+  const nextYearLabel = `Next year`;
+
   return (
     <DatePickerContext.Consumer>
       {context => {
         const { dispatch } = context;
         return (
-          <div className="calendar" aria-hidden="true">
+          <div className="calendar">
             <div className="monthDisplay">
               <Button
-                iconBefore={<ChevronLeftLargeIcon size="small" />}
+                iconBefore={
+                  <ChevronLeftLargeIcon
+                    size="small"
+                    label={previousYearLabel}
+                  />
+                }
                 appearance="subtle"
                 onClick={evt =>
                   dispatch(createOnYearChangedAction({ value: previousYear }))
                 }
               />
               <Button
-                iconBefore={<ChevronLeftIcon size="small" />}
+                iconBefore={
+                  <ChevronLeftIcon size="small" label={prevousMonthLabel} />
+                }
                 appearance="subtle"
                 onClick={evt =>
                   dispatch(createOnMonthChangedAction({ value: previousMonth }))
@@ -99,24 +165,35 @@ export default function Calendar(props: CalendarProps) {
               </span>
 
               <Button
-                iconBefore={<ChevronRightIcon size="small" />}
+                iconBefore={
+                  <ChevronRightIcon size="small" label={nextMonthLabel} />
+                }
                 appearance="subtle"
                 onClick={evt =>
                   dispatch(createOnMonthChangedAction({ value: nextMonth }))
                 }
               />
               <Button
-                iconBefore={<ChevronRightLargeIcon size="small" />}
+                iconBefore={
+                  <ChevronRightLargeIcon size="small" label={nextYearLabel} />
+                }
                 appearance="subtle"
                 onClick={evt =>
                   dispatch(createOnYearChangedAction({ value: nextYear }))
                 }
               />
             </div>
-            <table className="week">
-              <CalendarHeader />
-              <tbody>{weeks}</tbody>
-            </table>
+            <div
+              tabIndex="0"
+              onKeyUp={event => onCalendarKeyUpEvent({ event, dispatch, date })}
+            >
+              {/* TODO: Could we put invisible instructions here for screenreaders on using cursor keys and what the value is?
+                        - set an aria role?*/}
+              <table className="week">
+                <CalendarHeader />
+                <tbody>{weeks}</tbody>
+              </table>
+            </div>
           </div>
         );
       }}

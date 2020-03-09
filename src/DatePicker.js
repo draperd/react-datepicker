@@ -112,8 +112,6 @@ export default function DatePicker(props: DatePickerProps) {
     ? state.selectedDate.toLocaleDateString(locale, ariaDateOptions)
     : "";
 
-  console.log("Aria date", ariaDate);
-
   const ariaLabel =
     label + (ariaDate === "" ? " with no date" : ` with date ${ariaDate}`);
 
