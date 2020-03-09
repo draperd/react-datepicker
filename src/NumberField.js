@@ -5,14 +5,23 @@ import { DatePickerContext } from "./DatePicker";
 import type { InputFieldStateValue, OnChangeCreateAction } from "./types";
 import "./NumberField.css";
 
+type SetInitialFocusRef = (ref: any) => void;
+
 export type NumberFieldProps = {
   label: string,
   name: string,
   onChangeCreateAction: OnChangeCreateAction,
-  valueAttributeInState: InputFieldStateValue
+  valueAttributeInState: InputFieldStateValue,
+  setInitialFocusRef?: SetInitialFocusRef
 };
 export default function NumberField(props: NumberFieldProps) {
-  const { label, name, onChangeCreateAction, valueAttributeInState } = props;
+  const {
+    label,
+    name,
+    onChangeCreateAction,
+    valueAttributeInState,
+    setInitialFocusRef
+  } = props;
   return (
     <DatePickerContext.Consumer>
       {context => {
@@ -29,6 +38,7 @@ export default function NumberField(props: NumberFieldProps) {
                 dispatch(onChangeCreateAction({ value: evt.target.value }))
               }
               isCompact
+              ref={ref => setInitialFocusRef && setInitialFocusRef(ref)}
             />
           </div>
         );

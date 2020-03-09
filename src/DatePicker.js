@@ -100,6 +100,8 @@ export default function DatePicker(props: DatePickerProps) {
     ? state.selectedDate.toDateString()
     : "";
 
+  /* The following section is very much a work in progress experimenting with good messages for accessibility, this
+     needs to be refactored into more suitable functions for clarity / code cleanliness */
   const locale = undefined;
   const ariaDateOptions = {
     year: "numeric",
@@ -135,7 +137,7 @@ export default function DatePicker(props: DatePickerProps) {
         isOpen={state.pickerIsVisible}
         onClose={() => dispatch(createHidePickerAction())}
         placement="bottom-start"
-        content={() => (
+        content={({ setInitialFocusRef }) => (
           <div role="dialog" className="main" aria-labelledby={dialogTitle}>
             <h2 id={dialogTitle}>Select a date for {label}</h2>
             <div className="picker">
@@ -145,6 +147,7 @@ export default function DatePicker(props: DatePickerProps) {
                   name="day"
                   onChangeCreateAction={createOnDayChangedAction}
                   valueAttributeInState="dayInputFieldValue"
+                  setInitialFocusRef={setInitialFocusRef}
                 />
                 <NumberField
                   label="Month"
