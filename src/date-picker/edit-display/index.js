@@ -11,7 +11,7 @@ import {
   createOnYearChangedAction,
   createSelectDateAction,
   createHidePickerAction
-} from "../../actions";
+} from "../actions";
 import type { Props } from "./types";
 
 export default function EditDisplay(props: Props) {
