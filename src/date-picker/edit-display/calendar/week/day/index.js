@@ -1,16 +1,12 @@
 // @flow
 
 import React from "react";
-import { DatePickerContext } from "./DatePicker";
-import { createSelectDateAction } from "./actions";
-import type { DayData } from "./types";
-import "./Day.css";
+import { DatePickerContext } from "../../../../index";
+import { createSelectDateAction } from "../../../../actions";
+import type { Props } from "./types";
+import "./styles.css";
 
-export type DayProps = {
-  day: DayData
-};
-
-export default function Day(props: DayProps) {
+export default function Day(props: Props) {
   const { day } = props;
   const {
     available,

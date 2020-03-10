@@ -1,4 +1,6 @@
 // @flow
+import type { WeekData } from "./edit-display/calendar/week/types";
+import type { DayData } from "./edit-display/calendar/week/day/types";
 
 export const SHOW_PICKER_ACTION = "showPicker";
 export const HIDE_PICKER_ACTION = "hidePicker";
@@ -8,6 +10,8 @@ export const ON_YEAR_CHANGED_ACTION = "onYearChanged";
 export const SELECT_DATE_ACTION = "selectDate";
 export const CLEAR_DATE_ACTION = "clearDate";
 export const SET_CONSTRAINTS_ACTION = "setConstraints";
+
+export type FormatDateOptions = any;
 
 export type DatesAreEqual = ({ date1: Date, date2: Date }) => boolean;
 export type DateIsBeforeFirstDateInMonth = ({
@@ -20,15 +24,6 @@ export type DateIsAfterLastDateInMonth = ({
   lastDateInMonth: Date
 }) => boolean;
 
-export type DayData = {
-  dayOfMonth: number,
-  isInCurrentMonth: boolean,
-  available: boolean,
-  selected: boolean,
-  today: boolean,
-  date: Date
-};
-
 export type CreateDayData = ({
   currentDate: Date,
   firstDateInMonth: Date,
@@ -38,10 +33,6 @@ export type CreateDayData = ({
   earliestAllowedDate?: Date,
   latestAllowedDate?: Date
 }) => DayData;
-
-export type WeekData = {
-  [number]: DayData
-};
 
 export type GetFirstDayOfMonth = Date => number;
 export type GetLastDateOfPreviousMonth = Date => number;
@@ -99,11 +90,6 @@ export type DatePickerProps = {
   latestAllowedDate?: Date,
   onChange?: OnChange,
   label?: string
-};
-export type CalendarProps = {
-  date: Date,
-  earliestAllowedDate?: Date,
-  latestAllowedDate?: Date
 };
 
 export type ShowPickerAction = {

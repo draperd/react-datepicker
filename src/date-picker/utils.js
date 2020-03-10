@@ -1,19 +1,19 @@
 // @flow
 
+import type { WeekData } from "./edit-display/calendar/week/types";
+import type { DayData } from "./edit-display/calendar/week/day/types";
 import type {
   CreateDayData,
   DatesAreEqual,
   DateIsAvailable,
   DateIsBeforeFirstDateInMonth,
   DateIsAfterLastDateInMonth,
-  DayData,
   GetFirstDateOfWeek,
   GetWeekData,
   GetNextDay,
   GetFirstDateInMonth,
   GetLastDateInMonth,
-  GetMonthData,
-  WeekData
+  GetMonthData
 } from "./types";
 
 export const oneDayInMilliseconds = 60 * 60 * 24 * 1000;

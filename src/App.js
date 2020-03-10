@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from "react";
-import DatePicker from "./DatePicker";
+import DatePicker from "./date-picker";
 import "./App.css";
 
 const initialDate = new Date();
